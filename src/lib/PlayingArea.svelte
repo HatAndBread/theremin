@@ -51,22 +51,34 @@
     inactiveNotes.filter((n) => n).forEach((n) => setInactive(document.getElementById(`note-${n}`)))
     priorNumberOfTouches = touches.length;
   }
-  const noteClass = (n: number) => {
+  const color = (n: number) => {
     if (n > 12) n = n % 12;
     let color: string;
-    if (n % 5 === 0) color = "blue"
-    if (n % 7 === 0) color = "green"
-    if (n % 12 === 0) color = "red"
-    const colorString = color ? `bg-${color}-100` : undefined
-    //console.log(`border-t border-secondary h-[12px] text-accent text-[10px] flex items-center active:bg-accent notes ${color && colorString}`)
-    return `border-t border-secondary h-[12px] text-accent text-[10px] flex items-center active:bg-accent notes ${color && colorString}`
+    if (n % 5 === 0) color = "success"
+    if (n % 7 === 0) color = "info"
+    if (n % 12 === 0) color = "error"
+    return `bg-${color}`;
   }
   const letters = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "A", "B"]
 </script>
 <div class="absolute top-0 w-full h-full flex flex-col" on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:touchmove={handleTouchMove}>
   {#each notes as note (note)}
-    <div class={noteClass(note)} data-note={note} id={`note-${note}`}>
+  {#if !(note%12)}
+    <div class={`border-t border-secondary h-[20px] text-accent text-[10px] flex items-center active:bg-accent notes bg-error`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
+  {:else if !(note%7)}
+    <div class={`border-t border-secondary h-[20px] text-accent text-[10px] flex items-center active:bg-accent notes bg-info`} data-note={note} id={`note-${note}`}>
+      {note}
+    </div>
+  {:else if !(note%5)}
+    <div class={`border-t border-secondary h-[20px] text-accent text-[10px] flex items-center active:bg-accent notes bg-success`} data-note={note} id={`note-${note}`}>
+      {note}
+    </div>
+  {:else}
+    <div class={`border-t border-secondary h-[20px] text-accent text-[10px] flex items-center active:bg-accent notes bg-warning`} data-note={note} id={`note-${note}`}>
+      {note}
+    </div>
+  {/if}
   {/each}
 </div>
