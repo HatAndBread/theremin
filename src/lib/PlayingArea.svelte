@@ -44,7 +44,7 @@
       inactiveNotes[note] = null;
       let {top, bottom, height} = element.getClientRects()[0]
       const percentage = (height - (bottom - touch.clientY)) / height;
-      console.log(touch)
+      console.log(touch.radiusY)
       instrument.play(parseInt(note), percentage, i, touch.radiusY)
     })
     inactiveNotes.filter((n) => n).forEach((n) => setInactive(document.getElementById(`note-${n}`)))
