@@ -38,9 +38,9 @@ const updateFrequency = (frequency: number, touchNumber: number) => {
 }
 
 const updateVolume = (force: number, touchNumber: number) => {
-  console.log(-100 + (force * 10))
-  allInstruments[touchNumber].sine.volume.value = -115 + (force * 10);
-  allInstruments[touchNumber].triangle.volume.value = -115 + (force * 10);
+  const newValue = -115 + (force * 10)
+  allInstruments[touchNumber].sine.volume.value = 0;
+  allInstruments[touchNumber].triangle.volume.value = 0;
 }
 
 function start(touchNumber: number) {

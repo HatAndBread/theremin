@@ -3,6 +3,7 @@
   export let started:boolean;
   let pointerDown = false;
   let priorNumberOfTouches = 0;
+  let y = 0
   const notes = [...Array(64)].map((_, i) => i)
   const setInactive = (el: HTMLElement) => {
     el.classList.remove("bg-accent")
@@ -44,7 +45,7 @@
       inactiveNotes[note] = null;
       let {top, bottom, height} = element.getClientRects()[0]
       const percentage = (height - (bottom - touch.clientY)) / height;
-      console.log(touch.radiusY)
+      y = touch.radiusY
       instrument.play(parseInt(note), percentage, i, touch.radiusY)
     })
     inactiveNotes.filter((n) => n).forEach((n) => setInactive(document.getElementById(`note-${n}`)))
@@ -54,6 +55,7 @@
 </script>
 
 <div class="absolute top-0 w-full h-full flex flex-col" on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:touchmove={handleTouchMove}>
+  <p>{y}</p>
   {#each notes as note (note)}
     <div class="border-t border-secondary h-[12px] text-accent text-[10px] flex items-center active:bg-accent notes" data-note={note} id={`note-${note}`}>
       {note}
