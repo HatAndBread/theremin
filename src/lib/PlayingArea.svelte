@@ -2,6 +2,7 @@
   import {instrument} from "../sound/sound"
   export let started:boolean;
   let pointerDown = false;
+  let priorNumberOfTouches = 0;
   const notes = [...Array(64)].map((_, i) => i)
   const setInactive = (el: HTMLElement) => {
     el.classList.remove("bg-accent")
@@ -10,7 +11,6 @@
     if (!started) return;
     e.preventDefault();
     pointerDown = true;
-    instrument.start()
     handleTouchMove(e);
   }
   const handleTouchEnd = (e: TouchEvent) => {
@@ -20,12 +20,23 @@
       const el = document.getElementById(`note-${n}`)
       setInactive(el);
     })
-    instrument.stop();
+    handleTouchMove(e)
   }
   const handleTouchMove = (e: TouchEvent) => {
     if (!started) return;
     const inactiveNotes = [...notes]
-    Array.from(e.touches).forEach((touch) => {
+    const touches = Array.from(e.touches)
+    if (touches.length > priorNumberOfTouches) {
+      for (let i = priorNumberOfTouches; i < touches.length; i++)  {
+        instrument.start(i);
+      }
+    }
+    if (touches.length < priorNumberOfTouches) {
+      for (let i = touches.length; i < priorNumberOfTouches; i++)  {
+        instrument.stop(i);
+      }
+    }
+    touches.forEach((touch, i) => {
       const element = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLDivElement;
       const note = element?.dataset?.note;
       if (typeof note !== "string") return;
@@ -33,9 +44,10 @@
       inactiveNotes[note] = null;
       let {top, bottom, height} = element.getClientRects()[0]
       const percentage = (height - (bottom - touch.clientY)) / height;
-      instrument.play(parseInt(note), percentage)
+      instrument.play(parseInt(note), percentage, i)
     })
     inactiveNotes.filter((n) => n).forEach((n) => setInactive(document.getElementById(`note-${n}`)))
+    priorNumberOfTouches = touches.length;
   }
   const letters = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "A", "B"]
   console.log(notes)

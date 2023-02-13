@@ -2,6 +2,19 @@ import * as Tone from "tone";
 import { justIntonation } from "./just-intonation";
 import { equalTempered } from "./equal-tempered";
 
+
+const allInstruments: {sine: Tone.Oscillator, triangle: Tone.Oscillator, env: Tone.AmplitudeEnvelope}[] = []
+for (let i = 0; i < 5; i++) {
+  const env = new Tone.AmplitudeEnvelope({
+    attack: 0.1,
+    decay: 0.2,
+    sustain: 0.5,
+    release: 0.8,
+  }).toDestination();
+  const sine = new Tone.Oscillator({type: "sine"}).connect(env).start()
+  const triangle = new Tone.Oscillator({type: "triangle"}).connect(env).start()
+  allInstruments.push({sine, triangle, env})
+}
 const env = new Tone.AmplitudeEnvelope({
   attack: 0.1,
   decay: 0.2,
@@ -19,28 +32,27 @@ const scale = justIntonation;
 
 export const instrument = {start, stop, play}
 
-const updateFrequency = (frequency: number) => {
-  instruments.forEach((instrument) => {
-    instrument.frequency.value = frequency;
-  });
+const updateFrequency = (frequency: number, touchNumber: number) => {
+  allInstruments[touchNumber].sine.frequency.value = frequency;
+  allInstruments[touchNumber].triangle.frequency.value = frequency;
 }
 
-function start() {
-  env.triggerAttack(Tone.now())
+function start(touchNumber: number) {
+  allInstruments[touchNumber].env.triggerAttack(Tone.now())
 }
 
-function stop() {
-  env.triggerRelease(Tone.now())
+function stop(touchNumber: number) {
+  allInstruments[touchNumber].env.triggerRelease(Tone.now())
 }
 
-function play (noteNumber: number, offset: number) {
+function play (noteNumber: number, offset: number, touchNumber: number) {
   if (!window.started) return;
   const baseFrequency = frequencyForNoteNumber(noteNumber);
   const nextFrequency = frequencyForNoteNumber(noteNumber + 1);
   const diff = nextFrequency - baseFrequency
   const frequency = baseFrequency + (diff * offset)
 
-  updateFrequency(frequency);
+  updateFrequency(frequency, touchNumber);
 }
 
 function doubleXTimes(n: number, x: number) {
