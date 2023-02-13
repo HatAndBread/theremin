@@ -44,7 +44,7 @@
       inactiveNotes[note] = null;
       let {top, bottom, height} = element.getClientRects()[0]
       const percentage = (height - (bottom - touch.clientY)) / height;
-      instrument.play(parseInt(note), percentage, i)
+      instrument.play(parseInt(note), percentage, i, touch.force)
     })
     inactiveNotes.filter((n) => n).forEach((n) => setInactive(document.getElementById(`note-${n}`)))
     priorNumberOfTouches = touches.length;

@@ -37,6 +37,11 @@ const updateFrequency = (frequency: number, touchNumber: number) => {
   allInstruments[touchNumber].triangle.frequency.value = frequency;
 }
 
+const updateVolume = (touchNumber: number, force: number) => {
+  allInstruments[touchNumber].sine.volume.value = -100 + (force * 100);
+  allInstruments[touchNumber].triangle.volume.value = -100 + (force * 100);
+}
+
 function start(touchNumber: number) {
   allInstruments[touchNumber].env.triggerAttack(Tone.now())
 }
@@ -45,13 +50,14 @@ function stop(touchNumber: number) {
   allInstruments[touchNumber].env.triggerRelease(Tone.now())
 }
 
-function play (noteNumber: number, offset: number, touchNumber: number) {
+function play (noteNumber: number, offset: number, touchNumber: number, force: number) {
   if (!window.started) return;
   const baseFrequency = frequencyForNoteNumber(noteNumber);
   const nextFrequency = frequencyForNoteNumber(noteNumber + 1);
   const diff = nextFrequency - baseFrequency
   const frequency = baseFrequency + (diff * offset)
 
+  updateVolume(force, touchNumber);
   updateFrequency(frequency, touchNumber);
 }
 
