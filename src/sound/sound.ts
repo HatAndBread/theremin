@@ -24,13 +24,18 @@ const scale = justIntonation;
 
 export const instrument = {start, stop, play}
 
-const updateFrequency = (frequency: number, touchNumber: number) => {
-  allInstruments[touchNumber].sine.frequency.value = frequency;
-  allInstruments[touchNumber].triangle.frequency.value = frequency;
+const updateFrequency = (frequency: number, touchNumber: number, firstTouch?: true) => {
+  if (firstTouch) {
+    allInstruments[touchNumber].sine.frequency.value = frequency;
+    allInstruments[touchNumber].triangle.frequency.value = frequency;
+    return;
+  }
+  allInstruments[touchNumber].sine.frequency.rampTo(frequency, .05)
+  allInstruments[touchNumber].triangle.frequency.rampTo(frequency, .05)
 }
 
 const updateVolume = (volume: number, touchNumber: number) => {
-  allInstruments[touchNumber].gain.gain.value = volume;
+  allInstruments[touchNumber].gain.gain.rampTo(volume, .05)
 }
 
 function start(touchNumber: number) {
@@ -41,7 +46,7 @@ function stop(touchNumber: number) {
   allInstruments[touchNumber].env.triggerRelease(Tone.now())
 }
 
-function play (noteNumber: number, offset: number, touchNumber: number, volume: number) {
+function play (noteNumber: number, offset: number, touchNumber: number, volume: number, firstTouch?: true) {
   if (!window.started) return;
   const baseFrequency = frequencyForNoteNumber(noteNumber);
   const nextFrequency = frequencyForNoteNumber(noteNumber + 1);
@@ -49,7 +54,7 @@ function play (noteNumber: number, offset: number, touchNumber: number, volume: 
   const frequency = baseFrequency + (diff * offset)
 
   updateVolume(volume, touchNumber);
-  updateFrequency(frequency, touchNumber);
+  updateFrequency(frequency, touchNumber, firstTouch);
 }
 
 function doubleXTimes(n: number, x: number) {

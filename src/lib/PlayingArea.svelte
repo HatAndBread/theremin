@@ -11,7 +11,7 @@
     if (!started) return;
     e.preventDefault();
     pointerDown = true;
-    handleTouchMove(e);
+    handleTouchMove(e, true);
   }
   const handleTouchEnd = (e: TouchEvent) => {
     if (!started) return;
@@ -22,7 +22,7 @@
     })
     handleTouchMove(e)
   }
-  const handleTouchMove = (e: TouchEvent) => {
+  const handleTouchMove = (e: TouchEvent, firstTouch?: true) => {
     if (!started) return;
     const inactiveNotes = [...notes]
     const touches = Array.from(e.touches)
@@ -46,14 +46,13 @@
       const percentage = (height - (bottom - touch.clientY)) / height;
       const target = e.currentTarget as HTMLDivElement;
       const volume = touch.clientX / target.getBoundingClientRect().width
-      instrument.play(parseInt(note), percentage, i, volume)
+      instrument.play(parseInt(note), percentage, i, volume, firstTouch)
     })
     inactiveNotes.filter((n) => n).forEach((n) => setInactive(document.getElementById(`note-${n}`)))
     priorNumberOfTouches = touches.length;
   }
   const letters = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "A", "B"]
 </script>
-
 <div class="absolute top-0 w-full h-full flex flex-col" on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:touchmove={handleTouchMove}>
   {#each notes as note (note)}
     <div class="border-t border-secondary h-[12px] text-accent text-[10px] flex items-center active:bg-accent notes" data-note={note} id={`note-${note}`}>
