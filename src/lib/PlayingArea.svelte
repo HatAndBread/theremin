@@ -40,9 +40,19 @@
       const element = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLDivElement;
       const note = element?.dataset?.note;
       if (typeof note !== "string") return;
-      element.classList.add("!bg-accent")
+
+      const nextElement = document.getElementById(`note-${parseInt(note) + 1}`)
       inactiveNotes[note] = null;
       let {top, bottom, height} = element.getClientRects()[0]
+      if (Math.floor(touch.clientY) === top) {
+        element.classList.add("!bg-accent")
+      } else if (nextElement && Math.floor(touch.clientY % height) === height - 1 && Math.ceil(touch.clientY) === bottom){
+        nextElement.classList.add("!bg-accent")
+        inactiveNotes[parseInt(note) + 1] = null;
+      }else {
+        element.classList.remove("!bg-accent")
+        nextElement?.classList?.remove("!bg-accent")
+      }
       const percentage = (height - (bottom - touch.clientY)) / height;
       const target = e.currentTarget as HTMLDivElement;
       const volume = touch.clientX / target.getBoundingClientRect().width
