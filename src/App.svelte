@@ -1,6 +1,7 @@
 <script lang="ts">
   import PlayingArea from "./lib/PlayingArea.svelte"
   import Nav from "./lib/Nav.svelte"
+  import Modals from "./lib/Modals.svelte"
   import * as Tone from "tone";
 
   let started = false;
@@ -18,6 +19,7 @@
   {/if}
 </main>
 <Nav />
+<Modals />
 
 <style global lang="postcss">
 </style>

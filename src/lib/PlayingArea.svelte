@@ -1,5 +1,6 @@
 <script lang="ts">
   import {instrument} from "../sound/sound"
+  import {zoom} from "./stores"
   export let started:boolean;
   let pointerDown = false;
   let priorNumberOfTouches = 0;
@@ -69,23 +70,23 @@
   {/each}
   {#each notes as note (note)}
   {#if !((note%12)%12)}
-    <div class={`border-t border-error border-t-[5px] text-accent text-[20px] flex items-center notes`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-error border-t-[5px] text-accent flex items-center notes`} data-note={note} id={`note-${note}`} style="font-size: {$zoom}px;">
       {note}
     </div>
   {:else if ((note%12) === 4) || (note%12 === 2)}
-    <div class={`border-t border-accent border-t-[2px] text-accent text-[20px] flex items-center notes`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-accent border-t-[2px] text-accent flex items-center notes`} data-note={note} id={`note-${note}`} style="font-size: {$zoom}px;">
       {note}
     </div>
   {:else if !((note%12)%7)}
-    <div class={`border-t border-info border-t-[3px] text-accent text-[20px] flex items-center notes`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-info border-t-[3px] text-accent flex items-center notes`} data-note={note} id={`note-${note}`} style="font-size: {$zoom}px;">
       {note}
     </div>
   {:else if !((note%12)%5)}
-    <div class={`border-t border-success border-t-[2px] text-accent text-[20px] flex items-center notes`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-success border-t-[2px] text-accent flex items-center notes`} data-note={note} id={`note-${note}`} style="font-size: {$zoom}px;">
       {note}
     </div>
   {:else}
-    <div class={`border-t border-warning border-t-[1px] text-accent text-[20px] flex items-center notes`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-warning border-t-[1px] text-accent flex items-center notes`} data-note={note} id={`note-${note}`} style="font-size: {$zoom}px;">
       {note}
     </div>
   {/if}
