@@ -69,19 +69,19 @@
   {/each}
   {#each notes as note (note)}
   {#if !((note%12)%12)}
-    <div class={`border-t border-secondary h-[30px] text-accent text-[10px] flex items-center active:bg-accent notes bg-error`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-secondary text-accent text-[14px] flex items-center active:bg-accent notes bg-error`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
   {:else if !((note%12)%7)}
-    <div class={`border-t border-secondary h-[30px] text-accent text-[10px] flex items-center active:bg-accent notes bg-info`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-secondary text-accent text-[14px] flex items-center active:bg-accent notes bg-info`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
   {:else if !((note%12)%5)}
-    <div class={`border-t border-secondary h-[30px] text-accent text-[10px] flex items-center active:bg-accent notes bg-success`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-secondary text-accent text-[14px] flex items-center active:bg-accent notes bg-success`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
   {:else}
-    <div class={`border-t border-secondary h-[30px] text-accent text-[10px] flex items-center active:bg-accent notes bg-warning`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-secondary text-accent text-[14px] flex items-center active:bg-accent notes bg-warning`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
   {/if}
