@@ -3,9 +3,18 @@
   export let started:boolean;
   let pointerDown = false;
   let priorNumberOfTouches = 0;
+  const fingerGuides: {[key: string]: null | HTMLDivElement} = {
+    fingerGuide1: null,
+    fingerGuide2: null,
+    fingerGuide3: null,
+    fingerGuide4: null,
+    fingerGuide5: null,
+  }
   const notes = [...Array(64)].map((_, i) => i)
-  const setInactive = (el: HTMLElement) => {
-    el.classList.remove("!bg-accent")
+  const moveFingerGuide = (touch: Touch, finger: number) => {
+    const guide = fingerGuides[`fingerGuide${finger + 1}`];
+    guide.classList.remove("hidden");
+    guide.style.top = `${touch.clientY}px`
   }
   const handleTouchStart = (e: TouchEvent) => {
     if (!started) return;
@@ -18,7 +27,6 @@
     pointerDown = false;
     notes.forEach((n) => {
       const el = document.getElementById(`note-${n}`)
-      setInactive(el);
     })
     handleTouchMove(e)
   }
@@ -34,6 +42,8 @@
     if (touches.length < priorNumberOfTouches) {
       for (let i = touches.length; i < priorNumberOfTouches; i++)  {
         instrument.stop(i);
+        const guide = fingerGuides[`fingerGuide${i + 1}`];
+        guide.classList.add("hidden")
       }
     }
     touches.forEach((touch, i) => {
@@ -41,52 +51,37 @@
       const note = element?.dataset?.note;
       if (typeof note !== "string") return;
 
-      const nextElement = document.getElementById(`note-${parseInt(note) + 1}`)
+      moveFingerGuide(touch, i);
       inactiveNotes[note] = null;
       let {top, bottom, height} = element.getClientRects()[0]
-      if (Math.floor(touch.clientY) === top) {
-        element.classList.add("!bg-accent")
-      } else if (nextElement && Math.floor(touch.clientY % height) === height - 1 && Math.ceil(touch.clientY) === bottom){
-        nextElement.classList.add("!bg-accent")
-        inactiveNotes[parseInt(note) + 1] = null;
-      }else {
-        element.classList.remove("!bg-accent")
-        nextElement?.classList?.remove("!bg-accent")
-      }
       const percentage = (height - (bottom - touch.clientY)) / height;
       const target = e.currentTarget as HTMLDivElement;
       const volume = touch.clientX / target.getBoundingClientRect().width
       instrument.play(parseInt(note), percentage, i, volume, firstTouch)
     })
-    inactiveNotes.filter((n) => n).forEach((n) => setInactive(document.getElementById(`note-${n}`)))
     priorNumberOfTouches = touches.length;
   }
-  const color = (n: number) => {
-    if (n > 12) n = n % 12;
-    let color: string;
-    if (n % 5 === 0) color = "success"
-    if (n % 7 === 0) color = "info"
-    if (n % 12 === 0) color = "error"
-    return `bg-${color}`;
-  }
-  const letters = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "A", "B"]
 </script>
+
 <div class="absolute top-0 w-full h-full flex flex-col" on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:touchmove={handleTouchMove}>
+  {#each [...Array(5)] as _, i}
+    <div bind:this={fingerGuides[`fingerGuide${i + 1}`]} class="fixed w-screen h-[4px] bg-green-300 hidden"/>
+  {/each}
   {#each notes as note (note)}
   {#if !((note%12)%12)}
-    <div class={`border-t border-secondary h-[20px] text-accent text-[10px] flex items-center active:bg-accent notes bg-error`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-secondary h-[30px] text-accent text-[10px] flex items-center active:bg-accent notes bg-error`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
   {:else if !((note%12)%7)}
-    <div class={`border-t border-secondary h-[20px] text-accent text-[10px] flex items-center active:bg-accent notes bg-info`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-secondary h-[30px] text-accent text-[10px] flex items-center active:bg-accent notes bg-info`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
   {:else if !((note%12)%5)}
-    <div class={`border-t border-secondary h-[20px] text-accent text-[10px] flex items-center active:bg-accent notes bg-success`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-secondary h-[30px] text-accent text-[10px] flex items-center active:bg-accent notes bg-success`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
   {:else}
-    <div class={`border-t border-secondary h-[20px] text-accent text-[10px] flex items-center active:bg-accent notes bg-warning`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-secondary h-[30px] text-accent text-[10px] flex items-center active:bg-accent notes bg-warning`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
   {/if}
