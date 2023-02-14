@@ -65,23 +65,27 @@
 
 <div class="absolute top-0 w-full h-full flex flex-col" on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:touchmove={handleTouchMove}>
   {#each [...Array(5)] as _, i}
-    <div bind:this={fingerGuides[`fingerGuide${i + 1}`]} class="fixed w-screen h-[4px] bg-green-300 hidden"/>
+    <div bind:this={fingerGuides[`fingerGuide${i + 1}`]} class="fixed w-screen h-[4px] bg-primary hidden"/>
   {/each}
   {#each notes as note (note)}
   {#if !((note%12)%12)}
-    <div class={`border-t border-secondary text-accent text-[14px] flex items-center notes bg-error`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-error border-t-[5px] text-accent text-[14px] flex items-center notes`} data-note={note} id={`note-${note}`}>
+      {note}
+    </div>
+  {:else if ((note%12) === 4) || (note%12 === 2)}
+    <div class={`border-t border-accent border-t-[2px] text-accent text-[14px] flex items-center notes`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
   {:else if !((note%12)%7)}
-    <div class={`border-t border-secondary text-accent text-[14px] flex items-center notes bg-info`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-info border-t-[3px] text-accent text-[14px] flex items-center notes`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
   {:else if !((note%12)%5)}
-    <div class={`border-t border-secondary text-accent text-[14px] flex items-center notes bg-success`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-success border-t-[2px] text-accent text-[14px] flex items-center notes`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
   {:else}
-    <div class={`border-t border-secondary text-accent text-[14px] flex items-center notes bg-warning`} data-note={note} id={`note-${note}`}>
+    <div class={`border-t border-warning border-t-[1px] text-accent text-[14px] flex items-center notes`} data-note={note} id={`note-${note}`}>
       {note}
     </div>
   {/if}
