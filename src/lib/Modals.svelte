@@ -1,10 +1,8 @@
 <script lang="ts">
-  import {zoom} from "./stores"
+  import {zoom, localStorageWrite} from "./stores"
   const handleZoomChange = (e: Event) => {
     const target = e.target as HTMLInputElement;
-    const value = parseInt(target.value)
-    zoom.set(value)
-    localStorage.setItem("zoom", target.value)
+    localStorageWrite(zoom, "zoom", target.value)
   }
 </script>
 
