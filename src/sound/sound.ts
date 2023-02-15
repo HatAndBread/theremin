@@ -10,16 +10,18 @@ type Instrument = {
   sampler: Tone.Sampler;
   timeSinceLastTouch: number;
   interval: null | ReturnType<typeof setInterval>;
+  vibrato: Tone.Vibrato;
 };
 const allInstruments: Instrument[] = [];
 for (let i = 0; i < 5; i++) {
   const gain = new Tone.Gain(0).toDestination();
+  const vibrato = new Tone.Vibrato(8, 0.1).connect(gain);
   const env = new Tone.AmplitudeEnvelope({
     attack: 0.1,
     decay: 0.2,
     sustain: 0.5,
     release: 0.8,
-  }).connect(gain);
+  }).connect(vibrato);
   const sine = new Tone.Oscillator({ type: "sine" }).connect(env).start();
   const triangle = new Tone.Oscillator({ type: "triangle" })
     .connect(env)
@@ -32,6 +34,7 @@ for (let i = 0; i < 5; i++) {
     gain,
     sampler,
     timeSinceLastTouch: 0,
+    vibrato,
     interval: null
   });
 }
@@ -51,8 +54,8 @@ const updateFrequency = (
     instrument.triangle.frequency.value = frequency;
     return;
   }
-  instrument.sine.frequency.rampTo(frequency, 0.05);
-  instrument.triangle.frequency.rampTo(frequency, 0.05);
+  instrument.sine.frequency.rampTo(frequency, 0.1);
+  instrument.triangle.frequency.rampTo(frequency, 0.1);
 };
 
 const updateVolume = (volume: number, instrument: Instrument) => {
@@ -93,7 +96,7 @@ function play(
   resetTime(instrument);
   instrument.interval = setInterval(() => {
     instrument.timeSinceLastTouch += 1;
-    if (instrument.timeSinceLastTouch > 10) {
+    if (instrument.timeSinceLastTouch > 30) {
       updateFrequency(offset < 0.5 ? baseFrequency : nextFrequency, instrument)
     }
   }, 1);
