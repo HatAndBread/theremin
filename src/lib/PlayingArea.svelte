@@ -1,5 +1,9 @@
 <script lang="ts">
-  import {instrument} from "../sound/sound"
+  import {s} from "../sound/sound"
+  let instrument;
+  s.then((i) => {
+    instrument = i;
+  });
   import {zoom} from "./stores"
   export let started:boolean;
   let pointerDown = false;
@@ -64,7 +68,7 @@
   }
 </script>
 
-<div class="absolute top-0 w-full h-full flex flex-col" on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:touchmove={handleTouchMove}>
+<div class="absolute top-0 left-[80px] w-[calc(100vw_-_80px)] h-full flex flex-col" on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:touchmove={handleTouchMove}>
   {#each [...Array(5)] as _, i}
     <div bind:this={fingerGuides[`fingerGuide${i + 1}`]} class="fixed w-screen h-[4px] bg-primary hidden"/>
   {/each}
