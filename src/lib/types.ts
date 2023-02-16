@@ -10,3 +10,5 @@ export type Instrument = {
   interval: null | ReturnType<typeof setInterval>;
   vibrato: Tone.Vibrato;
 };
+
+export type EffectNames = "vibrato";

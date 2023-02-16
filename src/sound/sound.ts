@@ -2,11 +2,13 @@ import type {Instrument} from "../lib/types"
 import { justIntonation } from "./just-intonation";
 import { equalTempered } from "./equal-tempered";
 
+const allInstruments: Instrument[] = [];
+export const getInstrument = (touchNumber: number) => allInstruments[touchNumber];
+
 export const s = import("tone").then((Tone)=>{
-  const allInstruments: Instrument[] = [];
   for (let i = 0; i < 5; i++) {
     const gain = new Tone.Gain(0).toDestination();
-    const vibrato = new Tone.Vibrato(8, 0.1).connect(gain);
+    const vibrato = new Tone.Vibrato(0, 0).connect(gain);
     const env = new Tone.AmplitudeEnvelope({
       attack: 0.1,
       decay: 0.2,
