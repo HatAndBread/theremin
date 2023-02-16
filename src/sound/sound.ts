@@ -6,15 +6,13 @@ const allInstruments: Instrument[] = [];
 export const getInstruments = () => allInstruments;
 
 export const s = import("tone").then((Tone)=>{
-  const crusher = new Tone.BitCrusher(4).toDestination();
-  crusher.wet.value = 0;
   const multiband = new Tone.MultibandCompressor({
     lowFrequency: 200,
     highFrequency: 1300,
     low: {
       threshold: -12
     }
-  }).connect(crusher);
+  }).toDestination()
   const distortion = new Tone.Distortion(0).connect(multiband); 
   const delay = new Tone.PingPongDelay(0, 0).connect(distortion);
   const vibrato = new Tone.Vibrato(0, 0).connect(delay);
@@ -41,7 +39,6 @@ export const s = import("tone").then((Tone)=>{
       vibrato,
       delay,
       distortion,
-      crusher,
       interval: null
     });
   }

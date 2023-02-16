@@ -16,11 +16,6 @@ export const setEffectAdjusters = (name: EffectNames, values: {x: number, y: num
   } else if (name === "distortion") {
     const e = effect as Distortion;
     e.distortion = x;
-  } else if (name === "crusher") {
-    const e = effect as BitCrusher;
-    e.wet.value = x;
-    e.bits.value = Math.ceil(y * 15)
-
   } else {
     throw new Error("Unimplemented effect")
   }

@@ -6,5 +6,4 @@
   <SideAdjuster name="vibrato"/>
   <SideAdjuster name="delay"/>
   <SideAdjuster name="distortion"/>
-  <SideAdjuster name="crusher"/>
 </div>

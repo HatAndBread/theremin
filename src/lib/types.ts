@@ -11,7 +11,6 @@ export type Instrument = {
   vibrato: Tone.Vibrato;
   delay: Tone.PingPongDelay;
   distortion: Tone.Distortion;
-  crusher: Tone.BitCrusher;
 };
 
-export type EffectNames = "vibrato" | "delay" | "distortion" | "crusher";
+export type EffectNames = "vibrato" | "delay" | "distortion";
