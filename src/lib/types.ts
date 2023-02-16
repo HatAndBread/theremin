@@ -9,6 +9,9 @@ export type Instrument = {
   timeSinceLastTouch: number;
   interval: null | ReturnType<typeof setInterval>;
   vibrato: Tone.Vibrato;
+  delay: Tone.PingPongDelay;
+  distortion: Tone.Distortion;
+  crusher: Tone.BitCrusher;
 };
 
-export type EffectNames = "vibrato";
+export type EffectNames = "vibrato" | "delay" | "distortion" | "crusher";

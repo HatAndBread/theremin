@@ -6,17 +6,26 @@ const allInstruments: Instrument[] = [];
 export const getInstruments = () => allInstruments;
 
 export const s = import("tone").then((Tone)=>{
-  const filter = new Tone.Filter(200, "highpass").toDestination();
-  const limiter = new Tone.Limiter(0).connect(filter)
+  const crusher = new Tone.BitCrusher(4).toDestination();
+  crusher.wet.value = 0;
+  const multiband = new Tone.MultibandCompressor({
+    lowFrequency: 200,
+    highFrequency: 1300,
+    low: {
+      threshold: -12
+    }
+  }).connect(crusher);
+  const distortion = new Tone.Distortion(0).connect(multiband); 
+  const delay = new Tone.PingPongDelay(0, 0).connect(distortion);
+  const vibrato = new Tone.Vibrato(0, 0).connect(delay);
   for (let i = 0; i < 5; i++) {
-    const gain = new Tone.Gain(0).connect(filter);
-    const vibrato = new Tone.Vibrato(0, 0).connect(gain);
+    const gain = new Tone.Gain(0).connect(vibrato);
     const env = new Tone.AmplitudeEnvelope({
-      attack: 0.1,
+      attack: 0.3,
       decay: 0.2,
       sustain: 0.5,
       release: 0.8,
-    }).connect(vibrato);
+    }).connect(gain);
     const sine = new Tone.Oscillator({ type: "sine" }).connect(env).start();
     const triangle = new Tone.Oscillator({ type: "triangle" })
       .connect(env)
@@ -30,6 +39,9 @@ export const s = import("tone").then((Tone)=>{
       sampler,
       timeSinceLastTouch: 0,
       vibrato,
+      delay,
+      distortion,
+      crusher,
       interval: null
     });
   }
