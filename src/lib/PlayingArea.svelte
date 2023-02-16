@@ -6,7 +6,6 @@
   });
   import {zoom} from "./stores"
   export let started:boolean;
-  let pointerDown = false;
   let priorNumberOfTouches = 0;
   const fingerGuides: {[key: string]: null | HTMLDivElement} = {
     fingerGuide1: null,
@@ -24,21 +23,17 @@
   const handleTouchStart = (e: TouchEvent) => {
     if (!started) return;
     e.preventDefault();
-    pointerDown = true;
     handleTouchMove(e, true);
   }
-  const handleTouchEnd = (e: TouchEvent) => {
-    if (!started) return;
-    pointerDown = false;
-    notes.forEach((n) => {
-      const el = document.getElementById(`note-${n}`)
-    })
-    handleTouchMove(e)
-  }
+
   const handleTouchMove = (e: TouchEvent, firstTouch?: true) => {
     if (!started) return;
     const inactiveNotes = [...notes]
     const touches = Array.from(e.touches)
+      .filter((t) => {
+        const target = t.target as HTMLDivElement;
+        return Array.from(target.classList).includes("notes");
+      })
     if (touches.length > priorNumberOfTouches) {
       for (let i = priorNumberOfTouches; i < touches.length; i++)  {
         instrument.start(i);
@@ -68,7 +63,7 @@
   }
 </script>
 
-<div class="absolute top-0 left-[80px] w-[calc(100vw_-_80px)] h-full flex flex-col" on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:touchmove={handleTouchMove}>
+<div class="absolute top-0 left-[80px] w-[calc(100vw_-_80px)] h-full flex flex-col" on:touchstart={handleTouchStart} on:touchend={handleTouchMove} on:touchmove={handleTouchMove}>
   {#each [...Array(5)] as _, i}
     <div bind:this={fingerGuides[`fingerGuide${i + 1}`]} class="fixed w-screen h-[4px] bg-primary hidden"/>
   {/each}

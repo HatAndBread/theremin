@@ -13,3 +13,5 @@ export const setEffectAdjusters = (name: EffectNames, values: {x: number, y: num
     }
   })
 }
+
+export const getEffect = (name: EffectNames) => getInstruments()[0][name]
