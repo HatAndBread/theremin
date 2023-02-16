@@ -11,7 +11,7 @@
   }
   const handleTouch = (e: TouchEvent) => {
     const touch = Array.from(e.touches).find((t) => t.target === div);
-    if (!touch || touch.clientX < 0 || touch.clientY < 0 || touch.clientX > rect.right || touch.clientY > rect.bottom) return handleTouchEnd();
+    if (!touch || touch.clientX < 0 || touch.clientY < rect.top || touch.clientX > rect.right || touch.clientY > rect.bottom) return handleTouchEnd();
 
     const x = touch.clientX / rect.width;
     const y = (touch.clientY - rect.top) / rect.height;
