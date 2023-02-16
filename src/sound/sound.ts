@@ -6,9 +6,10 @@ const allInstruments: Instrument[] = [];
 export const getInstruments = () => allInstruments;
 
 export const s = import("tone").then((Tone)=>{
-  const limiter = new Tone.Limiter(0).toDestination()
+  const filter = new Tone.Filter(200, "highpass").toDestination();
+  const limiter = new Tone.Limiter(0).connect(filter)
   for (let i = 0; i < 5; i++) {
-    const gain = new Tone.Gain(0).connect(limiter);
+    const gain = new Tone.Gain(0).connect(filter);
     const vibrato = new Tone.Vibrato(0, 0).connect(gain);
     const env = new Tone.AmplitudeEnvelope({
       attack: 0.1,

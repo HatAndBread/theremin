@@ -47,7 +47,10 @@
       }
     }
     touches.forEach((touch, i) => {
-      const element = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLDivElement;
+      const element = Array.from(document.querySelectorAll(".notes")).find((el) => {
+        const {top, bottom, left, right} = el.getBoundingClientRect();
+        return touch.clientX > left && touch.clientX < right && touch.clientY < bottom && touch.clientY > top;
+      }) as HTMLDivElement;
       const note = element?.dataset?.note;
       if (typeof note !== "string") return;
 
