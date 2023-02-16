@@ -9,8 +9,9 @@
     rect = div?.getBoundingClientRect();
   }
   const handleTouch = (e: TouchEvent) => {
-    const touch = e.touches[0];
-    if (touch.clientX < 0 || touch.clientY < 0 || touch.clientX > rect.right || touch.clientY > rect.bottom) return;
+    const touch = Array.from(e.touches).find((t) => t.target === div);
+    if (!touch || touch.clientX < 0 || touch.clientY < 0 || touch.clientX > rect.right || touch.clientY > rect.bottom) return;
+
     const x = touch.clientX / rect.width;
     const y = touch.clientY / rect.height;
     setEffectAdjusters(name, {x, y});
