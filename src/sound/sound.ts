@@ -3,7 +3,7 @@ import { justIntonation } from "./just-intonation";
 import { equalTempered } from "./equal-tempered";
 
 const allInstruments: Instrument[] = [];
-export const getInstrument = (touchNumber: number) => allInstruments[touchNumber];
+export const getInstruments = () => allInstruments;
 
 export const s = import("tone").then((Tone)=>{
   for (let i = 0; i < 5; i++) {
