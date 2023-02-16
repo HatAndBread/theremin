@@ -6,8 +6,8 @@ export const setEffectAdjusters = (name: EffectNames, values: {x: number, y: num
   getInstruments().forEach((instrument) => {
     const effect = instrument[name]
     if (name === "vibrato") {
-      effect.depth.value = x / 1.5;
-      effect.frequency.value = y * 10;
+      effect.depth.rampTo(x / 1.5, 0.1)
+      effect.frequency.rampTo(y * 10, 0.1);
     }
   })
 }

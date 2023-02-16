@@ -17,6 +17,6 @@
   }
 </script>
 
-<div bind:this={div} class="w-full h-[80px] bg-green-100 text-xs text-center" on:touchmove={handleTouch}>
+<div bind:this={div} class="w-full h-[80px] bg-green-100 text-xs text-center select-none" on:touchmove={handleTouch} on:touchstart={handleTouch}>
   {name}
 </div>
