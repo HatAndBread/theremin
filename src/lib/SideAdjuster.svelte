@@ -44,6 +44,7 @@
 
   const toggle = (e) => {
     const target = e.currentTarget as HTMLInputElement;
+    setEffectAdjusters(name, {x: 0, y: 0});
     setOnOffStatus(target.checked);
   }
 </script>
