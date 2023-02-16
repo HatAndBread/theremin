@@ -3,7 +3,7 @@ import type {EffectNames} from "../lib/types";
 import { getInstruments } from "./sound";
 
 export const setEffectAdjusters = (name: EffectNames, values: {x: number, y: number}) => {
-  const {x, y} = values;
+  let {x, y} = values;
   const effect = getInstruments()[0][name];
   if (name === "vibrato") {
     const e = effect as Vibrato;
@@ -15,7 +15,7 @@ export const setEffectAdjusters = (name: EffectNames, values: {x: number, y: num
     e.feedback.rampTo(y, 0.2);
   } else if (name === "distortion") {
     const e = effect as Distortion;
-    e.distortion = x;
+    e.distortion = x * 3;
   } else {
     throw new Error("Unimplemented effect")
   }

@@ -3,11 +3,28 @@
   import type {EffectNames} from "./types"
 
   export let name: EffectNames;
+  export let switchColor: string;
   let div: HTMLDivElement;
   let guide: HTMLDivElement;
+  let checkbox: HTMLInputElement;
   let rect: DOMRect;
   $: {
     rect = div?.getBoundingClientRect();
+  }
+  const guideToStart = () => {
+    guide.style.left = `${rect.left}px`
+    guide.style.top = `${rect.top}px`
+  }
+  const getOnOffStatus = () => !!window.localStorage.getItem(name)
+  let on = getOnOffStatus();
+  const setOnOffStatus = (status: boolean) => {
+    if (status) {
+      window.localStorage.setItem(name, "1");
+    } else {
+      window.localStorage.removeItem(name);
+      guideToStart();
+    }
+    on = status;
   }
   const handleTouch = (e: TouchEvent) => {
     const touch = Array.from(e.touches).find((t) => t.target === div);
@@ -20,15 +37,23 @@
     setEffectAdjusters(name, {x, y});
   }
   const handleTouchEnd = () => {
-    const endOnTouch = ["vibrato"];
-    if (!endOnTouch.includes(name)) return;
+    if (on) return;
     setEffectAdjusters(name, {x: 0, y: 0});
-    guide.style.left = `0px`
-    guide.style.top = `0px`
+    guideToStart()
+  }
+
+  const toggle = (e) => {
+    const target = e.currentTarget as HTMLInputElement;
+    setOnOffStatus(target.checked);
   }
 </script>
 
-<div bind:this={div} class="w-full h-[80px] bg-green-100 text-xs text-center select-none border border-accent" on:touchmove={handleTouch} on:touchstart={handleTouch} on:touchend={handleTouchEnd}>
+<div class="form-control">
+  <label class="cursor-pointer label flex flex-col">
+    <input type="checkbox" class={switchColor} on:change={toggle} checked={on} bind:this={checkbox}/>
+  </label>
+</div>
+<div bind:this={div} class="w-full h-[80px] bg-secondary text-xs text-center select-none border border-accent" on:touchmove={handleTouch} on:touchstart={handleTouch} on:touchend={handleTouchEnd}>
   <div bind:this={guide} class="absolute w-[12px] h-[12px] rounded-full bg-primary pointer-events-none"></div>
   {name}
 </div>
