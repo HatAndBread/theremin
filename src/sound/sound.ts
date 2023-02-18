@@ -58,7 +58,7 @@ export const s = import("tone").then((Tone) => {
         threshold: -12,
       },
     }).connect(recorder).toDestination();
-    const looper = new Tone.Player().toDestination()
+    const looper = new Tone.GrainPlayer().toDestination()
     const distortion = new Tone.Distortion(0).connect(multiband);
     const delay = new Tone.PingPongDelay(0, 0).connect(distortion);
     const vibrato = new Tone.Vibrato(0, 0).connect(delay);
