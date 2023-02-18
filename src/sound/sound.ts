@@ -177,7 +177,7 @@ export const s = import("tone").then((Tone) => {
     }
 
     async function stopRecord() {
-      if (looper.state === "started") {
+      if (looper.state === "started" && recorder.state !== "started") {
         looper.stop();
         return;
       }
@@ -188,6 +188,7 @@ export const s = import("tone").then((Tone) => {
       const recording = await recorder.stop();
       const url = URL.createObjectURL(recording);
       const buff = new Tone.ToneAudioBuffer(url, () => {
+        looper.stop();
         looper.buffer = buff;
         looper.loop = true;
         looper.start();

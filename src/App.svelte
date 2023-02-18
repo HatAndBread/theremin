@@ -16,14 +16,13 @@
   }
 </script>
 
-<main class="flex flex-col items-center justify-center gap-4 h-[calc(100vh_-_64px)] relative">
+<main class="flex flex-col items-center justify-center gap-4 h-screen relative">
   <SideAdjusters />
   <PlayingArea started={started}/>
   {#if !started}
     <button on:click={start} class="btn btn-primary z-50">Start</button>
   {/if}
 </main>
-<Nav />
 <Modals />
 
 <style global lang="postcss">

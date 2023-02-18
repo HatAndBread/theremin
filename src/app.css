@@ -2,7 +2,4 @@
   @tailwind components;
   @tailwind base;
   @layer components {
-    .btn {
-      @apply rounded;
-    }
   }
