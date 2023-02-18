@@ -17,4 +17,8 @@
     <div id="app"></div>
     <script type="module" src="/src/main.ts" defer></script>
   </body>
+  <script>
+    const style = localStorage.getItem("style")
+    if (style) document.body.dataset.theme = style;
+  </script>
 </html>

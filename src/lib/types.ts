@@ -8,6 +8,7 @@ export type Instrument = {
   timeSinceLastTouch: number;
   interval: null | ReturnType<typeof setInterval>;
   vibrato: Tone.Vibrato;
+  frequency: null | number;
   delay: Tone.PingPongDelay;
   distortion: Tone.Distortion;
 };

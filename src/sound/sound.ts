@@ -6,6 +6,8 @@ import samples from "./samples";
 
 const allInstruments: Instrument[] = [];
 export const getInstruments = () => allInstruments;
+let controls;
+export const getControls = () => controls
 
 let buffers: { [key: string]: ToneAudioBuffer } = {};
 let baseLevel = 1;
@@ -48,13 +50,15 @@ export const s = import("tone").then((Tone) => {
     });
   };
   return loadBuffers().then(() => {
+    const recorder = new Tone.Recorder();
     const multiband = new Tone.MultibandCompressor({
       lowFrequency: 200,
       highFrequency: 1300,
       low: {
         threshold: -12,
       },
-    }).toDestination();
+    }).connect(recorder).toDestination();
+    const looper = new Tone.Player().toDestination()
     const distortion = new Tone.Distortion(0).connect(multiband);
     const delay = new Tone.PingPongDelay(0, 0).connect(distortion);
     const vibrato = new Tone.Vibrato(0, 0).connect(delay);
@@ -79,6 +83,7 @@ export const s = import("tone").then((Tone) => {
         vibrato,
         delay,
         distortion,
+        frequency: null,
         interval: null,
       });
     }
@@ -91,6 +96,7 @@ export const s = import("tone").then((Tone) => {
       instrument: Instrument,
       firstTouch?: true
     ) => {
+      instrument.frequency = frequency;
       if (firstTouch) {
         instrument.player.playbackRate = ((frequency * baseLevel) / startFrequency);
         instrument.oscillator.frequency.rampTo(frequency * baseLevel, 0.1)
@@ -166,6 +172,37 @@ export const s = import("tone").then((Tone) => {
       return scale[note] * octaveStart;
     }
 
-    return { start, stop, play };
+    function record() {
+      recorder.start();
+    }
+
+    async function stopRecord() {
+      if (looper.state === "started") {
+        looper.stop();
+        return;
+      }
+      if (recorder.state !== "started") {
+        looper.start();
+        return;
+      }
+      const recording = await recorder.stop();
+      const url = URL.createObjectURL(recording);
+      const buff = new Tone.ToneAudioBuffer(url, () => {
+        looper.buffer = buff;
+        looper.loop = true;
+        looper.start();
+      });
+    }
+
+    function changeBaseLevel(newLevel: number) {
+      baseLevel = newLevel;
+      getInstruments().forEach((instrument) => {
+        if (typeof instrument.frequency !== "number") return;
+        updateFrequency(instrument.frequency, instrument);
+      })
+    }
+
+    controls = { start, stop, play, record, stopRecord, changeBaseLevel};
+    return controls;
   });
 });

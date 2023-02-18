@@ -9,7 +9,7 @@ export default {
     extend: {},
   },
   daisyui: {
-    themes: ["cyberpunk"],
+    themes: ["cyberpunk", "cupcake", "emerald", "valentine", "forest", "dracula", "acid"],
   },
   darkMode: false, // or 'media' or 'class'
 }

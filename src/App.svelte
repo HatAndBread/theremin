@@ -1,9 +1,12 @@
 <script lang="ts">
+  import AudioRecorder from 'audio-recorder-polyfill'
   import PlayingArea from "./lib/PlayingArea.svelte"
   import SideAdjusters from "./lib/SideAdjusters.svelte"
   import Nav from "./lib/Nav.svelte"
   import Modals from "./lib/Modals.svelte"
   import * as Tone from "tone";
+
+  if (!window.MediaRecorder) window.MediaRecorder = AudioRecorder
 
   let started = false;
   const start = async () => {

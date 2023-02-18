@@ -32,7 +32,7 @@
   >
   <ul
     tabindex="0"
-    class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+    class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 !fixed"
   >
     {#each items as item, i}
       <li on:click={select} data-name={item}>
