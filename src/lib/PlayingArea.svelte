@@ -14,7 +14,7 @@
     fingerGuide4: null,
     fingerGuide5: null,
   }
-  const notes = [...Array(64)].map((_, i) => i)
+  const notes = [...Array(96)].map((_, i) => i)
   const blur = () => {
     // @ts-ignore
     if (document.activeElement.blur) document.activeElement.blur();
