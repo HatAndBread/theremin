@@ -44,6 +44,7 @@
 
   const toggle = (e) => {
     const target = e.currentTarget as HTMLInputElement;
+    target.checked = !target.checked;
     setEffectAdjusters(name, {x: 0, y: 0});
     setOnOffStatus(target.checked);
   }
@@ -51,7 +52,7 @@
 
 <div class="form-control">
   <label class="cursor-pointer label flex flex-col">
-    <input type="checkbox" class={switchColor} on:change={toggle} checked={on} bind:this={checkbox}/>
+    <input type="checkbox" class={switchColor} checked={on} bind:this={checkbox} on:touchstart={toggle} on:click={(e) => e.preventDefault()}/>
   </label>
 </div>
 <div bind:this={div} class="w-full h-[80px] bg-secondary text-xs text-center select-none border border-accent" on:touchmove={handleTouch} on:touchstart={handleTouch} on:touchend={handleTouchEnd}>

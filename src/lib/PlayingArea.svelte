@@ -56,10 +56,10 @@
 
       moveFingerGuide(touch, i);
       inactiveNotes[note] = null;
-      let {top, bottom, height} = element.getClientRects()[0]
+      let {top, bottom, height, width, left} = element.getClientRects()[0]
       const percentage = (height - (bottom - touch.clientY)) / height;
       const target = e.currentTarget as HTMLDivElement;
-      const volume = touch.clientX / target.getBoundingClientRect().width
+      const volume = (touch.clientX - left) / width
       instrument.play(parseInt(note), percentage, i, volume, firstTouch)
     })
     priorNumberOfTouches = touches.length;
