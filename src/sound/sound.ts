@@ -10,9 +10,21 @@ export const getInstruments = () => allInstruments;
 let buffers: { [key: string]: ToneAudioBuffer } = {};
 let currentBuffer = "sine";
 
+type OscillatorTypes = "sine" | "triangle" | "sawtooth" | "square"
+const nonPlayers = ["sine", "triangle", "sawtooth", "square"]
+
 export const setBuffer = (b: string) => {
   currentBuffer = b;
+  if (nonPlayers.includes(b)) {
+    getInstruments().forEach((instrument) => {
+      if (instrument.player.state === "started") instrument.player.stop();
+      instrument.oscillator.type = b as OscillatorTypes;
+      if (instrument.oscillator.state === "stopped") instrument.oscillator.start()
+    })
+    return;
+  }
   getInstruments().forEach((instrument) => {
+    if (instrument.oscillator.state === "started") instrument.oscillator.stop();
     instrument.player.stop()
     instrument.player.buffer = buffers[b]
     instrument.player.start()
@@ -53,14 +65,15 @@ export const s = import("tone").then((Tone) => {
         sustain: 0.5,
         release: 0.8,
       }).connect(gain);
+      const oscillator = new Tone.Oscillator().connect(env);
       const player = new Tone.Player().connect(env);
       player.loop = true;
-      player.buffer = buffers[currentBuffer];
-      player.start();
+      setBuffer(currentBuffer);
       allInstruments.push({
         env,
         gain,
         player,
+        oscillator,
         timeSinceLastTouch: 0,
         vibrato,
         delay,
@@ -79,9 +92,11 @@ export const s = import("tone").then((Tone) => {
     ) => {
       if (firstTouch) {
         instrument.player.playbackRate = (frequency / startFrequency);
+        instrument.oscillator.frequency.rampTo(frequency, 0.1)
         return;
       }
       instrument.player.playbackRate = (frequency / startFrequency);
+      instrument.oscillator.frequency.rampTo(frequency, 0.1)
     };
 
     const updateVolume = (volume: number, instrument: Instrument) => {

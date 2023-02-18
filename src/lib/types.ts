@@ -2,6 +2,7 @@ import type Tone from "tone";
 
 export type Instrument = {
   player: Tone.Player;
+  oscillator: Tone.Oscillator;
   env: Tone.AmplitudeEnvelope;
   gain: Tone.Gain;
   timeSinceLastTouch: number;

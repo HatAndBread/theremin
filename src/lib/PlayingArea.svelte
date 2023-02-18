@@ -15,6 +15,10 @@
     fingerGuide5: null,
   }
   const notes = [...Array(64)].map((_, i) => i)
+  const blur = () => {
+    // @ts-ignore
+    if (document.activeElement.blur) document.activeElement.blur();
+  }
   const moveFingerGuide = (touch: Touch, finger: number) => {
     const guide = fingerGuides[`fingerGuide${finger + 1}`];
     guide.classList.remove("hidden");
@@ -23,11 +27,13 @@
   const handleTouchStart = (e: TouchEvent) => {
     if (!started) return;
     e.preventDefault();
+    blur();
     handleTouchMove(e, true);
   }
 
   const handleTouchMove = (e: TouchEvent, firstTouch?: true) => {
     if (!started) return;
+    blur();
     const inactiveNotes = [...notes]
     const touches = Array.from(e.touches)
       .filter((t) => {
