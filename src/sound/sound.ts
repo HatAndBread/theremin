@@ -60,8 +60,8 @@ export const s = import("tone").then((Tone) => {
     }).connect(recorder).toDestination();
     const delay = new Tone.PingPongDelay(0, 0).connect(multiband);
     const distortion = new Tone.Distortion(0).connect(delay);
-    const vibrato = new Tone.Vibrato(0, 0).connect(delay);
-    const looper = new Tone.GrainPlayer().connect(delay)
+    const vibrato = new Tone.Vibrato(0, 0).connect(distortion);
+    const looper = new Tone.GrainPlayer().connect(distortion)
     for (let i = 0; i < 5; i++) {
       const gain = new Tone.Gain(0).connect(vibrato);
       const env = new Tone.AmplitudeEnvelope({
