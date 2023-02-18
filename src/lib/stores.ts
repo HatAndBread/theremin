@@ -3,6 +3,8 @@ import type {Writable} from "svelte/store"
 
 export const zoom = localStorageWritable("zoom", 12)
 
+export const baseLevel = localStorageWritable("baseLevel", 1);
+
 
 export function localStorageWrite (writable: Writable<number | string>,  name: string, value: string | number) {
   writable.set(value)

@@ -4,7 +4,7 @@
   s.then((i) => {
     instrument = i;
   });
-  import {zoom} from "./stores"
+  import {zoom, baseLevel} from "./stores"
   export let started:boolean;
   let priorNumberOfTouches = 0;
   const fingerGuides: {[key: string]: null | HTMLDivElement} = {
@@ -66,7 +66,7 @@
       const percentage = (height - (bottom - touch.clientY)) / height;
       const target = e.currentTarget as HTMLDivElement;
       const volume = (touch.clientX - left) / width
-      instrument.play(parseInt(note), percentage, i, volume, firstTouch)
+      instrument.play(parseInt(note), percentage, i, volume, firstTouch, $baseLevel)
     })
     priorNumberOfTouches = touches.length;
   }

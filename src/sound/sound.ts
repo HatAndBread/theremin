@@ -8,6 +8,7 @@ const allInstruments: Instrument[] = [];
 export const getInstruments = () => allInstruments;
 
 let buffers: { [key: string]: ToneAudioBuffer } = {};
+let baseLevel = 1;
 let currentBuffer = "sine";
 
 type OscillatorTypes = "sine" | "triangle" | "sawtooth" | "square"
@@ -91,12 +92,12 @@ export const s = import("tone").then((Tone) => {
       firstTouch?: true
     ) => {
       if (firstTouch) {
-        instrument.player.playbackRate = (frequency / startFrequency);
-        instrument.oscillator.frequency.rampTo(frequency, 0.1)
+        instrument.player.playbackRate = ((frequency * baseLevel) / startFrequency);
+        instrument.oscillator.frequency.rampTo(frequency * baseLevel, 0.1)
         return;
       }
-      instrument.player.playbackRate = (frequency / startFrequency);
-      instrument.oscillator.frequency.rampTo(frequency, 0.1)
+      instrument.player.playbackRate = ((frequency * baseLevel) / (startFrequency));
+      instrument.oscillator.frequency.rampTo(frequency * baseLevel, 0.1)
     };
 
     const updateVolume = (volume: number, instrument: Instrument) => {
@@ -126,8 +127,10 @@ export const s = import("tone").then((Tone) => {
       offset: number,
       touchNumber: number,
       volume: number,
-      firstTouch?: true
+      firstTouch: true | undefined,
+      bl: number
     ) {
+      baseLevel = bl;
       if (!window.started) return;
       const instrument = allInstruments[touchNumber];
       const baseFrequency = frequencyForNoteNumber(noteNumber);
