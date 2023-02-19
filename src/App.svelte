@@ -17,7 +17,7 @@
   }
 </script>
 
-<main class="flex flex-col items-center justify-center gap-4 h-screen relative">
+<main class="flex flex-col items-center justify-center gap-4 h-screen relative select-none">
   <SideAdjusters />
   <PlayingArea started={started}/>
   {#if !localStorage.getItem("used") && !started}

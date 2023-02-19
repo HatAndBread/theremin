@@ -56,6 +56,6 @@
   </label>
 </div>
 <div bind:this={div} class="w-full h-[80px] bg-secondary text-xs text-center select-none border border-accent" on:touchmove={handleTouch} on:touchstart={handleTouch} on:touchend={handleTouchEnd}>
-  <div bind:this={guide} class="absolute w-[12px] h-[12px] rounded-full bg-primary pointer-events-none"></div>
+  <div bind:this={guide} class="absolute w-[12px] h-[12px] rounded-full bg-primary text-primary-content pointer-events-none"></div>
   {name}
 </div>
