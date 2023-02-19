@@ -26,7 +26,7 @@
       <button on:click={start} class="btn btn-secondary z-50 text-secondary-content">Start</button>
     </div>
   {:else if !started}
-    <button on:click={start} class="btn btn-primary z-50 translate-y-[-32px]">Start</button>
+    <button on:click={start} class="btn btn-primary z-50">Start</button>
   {/if}
 </main>
 <Modals />
