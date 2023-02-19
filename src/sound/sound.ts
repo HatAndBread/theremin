@@ -189,7 +189,6 @@ export const s = import("tone").then((Tone) => {
       const url = URL.createObjectURL(recording);
       const buff = new Tone.ToneAudioBuffer(url, () => {
         looper.stop();
-        looper.overlap = 0.5;
         looper.buffer = buff;
         looper.loop = true;
         looper.start();
