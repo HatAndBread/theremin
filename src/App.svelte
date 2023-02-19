@@ -13,14 +13,20 @@
     await Tone.start();
     window.started = true;
     started = true;
+    localStorage.setItem("used", "1");
   }
 </script>
 
 <main class="flex flex-col items-center justify-center gap-4 h-screen relative">
   <SideAdjusters />
   <PlayingArea started={started}/>
-  {#if !started}
-    <button on:click={start} class="btn btn-primary z-50">Start</button>
+  {#if !localStorage.getItem("used") && !started}
+    <div class="bg-primary z-10 text-primary-content text-center m-4 flex flex-col items-center p-4 gap-4 translate-y-[-32px]">
+      <span>NOTE: This application requires a touchscreen.</span>
+      <button on:click={start} class="btn btn-secondary z-50 text-secondary-content">Start</button>
+    </div>
+  {:else if !started}
+    <button on:click={start} class="btn btn-primary z-50 translate-y-[-32px]">Start</button>
   {/if}
 </main>
 <Modals />
