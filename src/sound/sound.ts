@@ -87,10 +87,10 @@ export const s = import("tone").then((Tone) => {
     for (let i = 0; i < 5; i++) {
       const gain = new Tone.Gain(0).connect(vibrato);
       const env = new Tone.AmplitudeEnvelope({
-        attack: 0.3,
-        decay: 0.2,
-        sustain: 0.5,
-        release: 0.8,
+        attack: localStorage.getItem("attack") || 0.3,
+        decay: localStorage.getItem("decay") || 0.2,
+        sustain: parseFloat(localStorage.getItem("sustain")) || 0.5,
+        release: parseFloat(localStorage.getItem("release")) || 0.8,
       }).connect(gain);
       const oscillator = new Tone.Oscillator().connect(env);
       const player = new Tone.Player().connect(env);
