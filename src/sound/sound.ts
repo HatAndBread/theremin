@@ -2,7 +2,7 @@ import type { Oscillator, Sampler, ToneAudioBuffer } from "tone";
 import type { Instrument } from "../lib/types";
 import { justIntonation } from "./just-intonation";
 import { equalTempered } from "./equal-tempered";
-import { attack, release, sustain, decay, currentInstrument } from "../lib/stores";
+import { shift, attack, release, sustain, decay, currentInstrument } from "../lib/stores";
 import samples from "./samples";
 
 const allInstruments: Instrument[] = [];
@@ -82,7 +82,8 @@ export const s = import("tone").then((Tone) => {
       },
     }).connect(recorder).toDestination();
     const delay = new Tone.PingPongDelay(0, 0).connect(multiband);
-    const distortion = new Tone.Distortion(0).connect(delay);
+    const shift = new Tone.FrequencyShifter(44).connect(delay);
+    const distortion = new Tone.Distortion(0).connect(shift);
     const vibrato = new Tone.Vibrato(0, 0).connect(distortion);
     const looper = new Tone.GrainPlayer().connect(delay)
     for (let i = 0; i < 5; i++) {
@@ -99,6 +100,7 @@ export const s = import("tone").then((Tone) => {
       setBuffer(currentBuffer);
       allInstruments.push({
         env,
+        shift,
         gain,
         player,
         oscillator,

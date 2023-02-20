@@ -4,6 +4,7 @@ export type Instrument = {
   player: Tone.Player;
   oscillator: Tone.Oscillator;
   env: Tone.AmplitudeEnvelope;
+  shift: Tone.FrequencyShifter;
   gain: Tone.Gain;
   timeSinceLastTouch: number;
   interval: null | ReturnType<typeof setInterval>;
@@ -13,4 +14,4 @@ export type Instrument = {
   distortion: Tone.Distortion;
 };
 
-export type EffectNames = "vibrato" | "delay" | "distortion";
+export type EffectNames = "vibrato" | "delay" | "distortion" | "shift";

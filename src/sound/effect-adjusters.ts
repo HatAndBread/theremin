@@ -1,4 +1,4 @@
-import type {Vibrato, PingPongDelay, Distortion, BitCrusher} from "tone"
+import type {Vibrato, PingPongDelay, Distortion, FrequencyShifter} from "tone"
 import type {EffectNames} from "../lib/types";
 import { getInstruments } from "./sound";
 
@@ -16,6 +16,11 @@ export const setEffectAdjusters = (name: EffectNames, values: {x: number, y: num
   } else if (name === "distortion") {
     const e = effect as Distortion;
     e.distortion = x * 3;
+    e.wet.value = y;
+  } else if (name === "shift") {
+    const e = effect as FrequencyShifter;
+    e.frequency.rampTo(x * 100, 0.1)
+    e.wet.value = y;
   } else {
     throw new Error("Unimplemented effect")
   }

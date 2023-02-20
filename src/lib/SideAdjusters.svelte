@@ -4,7 +4,7 @@
   import Dropdown from "./Dropdown.svelte";
   import EnvelopeAdjuster from "./EnvelopeAdjuster.svelte";
   import iconSrc from "../assets/instrument.svg";
-  import { localStorageWrite, baseLevel, attack, release, sustain, decay, currentInstrument } from "./stores";
+  import { localStorageWrite, baseLevel, shift, attack, release, sustain, decay, currentInstrument } from "./stores";
   import samples from "../sound/samples";
 
   let recordBtn: HTMLButtonElement;
@@ -73,7 +73,7 @@
       buttonLabel={"Instrument"}
       items={Object.keys(samples)}
       onClick={selectInstrument}
-      buttonClass="btn btn-primary w-[calc(100%_-_0.5em)] mx-1"
+      buttonClass="flex justify-center active:bg-primary"
       ><img
         src={iconSrc}
         slot="icon"
@@ -82,15 +82,16 @@
       /></Dropdown
     >
   </div>
-  <SideAdjuster name="vibrato" switchColor="toggle toggle-primary" />
-  <SideAdjuster name="delay" switchColor="toggle toggle-secondary" />
-  <SideAdjuster name="distortion" switchColor="toggle toggle-accent" />
+  <SideAdjuster name="vibrato" switchColor="toggle toggle-primary toggle-sm" />
+  <SideAdjuster name="delay" switchColor="toggle toggle-secondary toggle-sm" />
+  <SideAdjuster name="distortion" switchColor="toggle toggle-accent toggle-sm" />
+  <SideAdjuster name="shift" switchColor="toggle toggle-success toggle-sm" />
   <EnvelopeAdjuster name="attack" handleChange={adjustAttack} defaultValue={$attack}/>
   <EnvelopeAdjuster name="release" handleChange={adjustRelease} defaultValue={$release}/>
   <EnvelopeAdjuster name="sustain" handleChange={adjustSustain} defaultValue={$sustain}/>
   <EnvelopeAdjuster name="decay" handleChange={adjustDecay} defaultValue={$decay}/>
   <div class="w-full flex justify-center gap-2 mt-2">
-    <button class="bg-primary p-1 rounded" on:touchstart={lower}>
+    <button class="bg-primary p-1 rounded active:bg-primary-focus" on:touchstart={lower}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -106,7 +107,7 @@
         />
       </svg>
     </button>
-    <button class="bg-primary p-1 rounded" on:touchstart={higher}>
+    <button class="bg-primary p-1 rounded active:bg-primary-focus" on:touchstart={higher}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -144,7 +145,7 @@
         />
       </svg>
     </button>
-    <button on:touchstart={stopRecord} class="bg-primary p-1 rounded">
+    <button on:touchstart={stopRecord} class="bg-primary p-1 rounded active:bg-primary-focus">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
