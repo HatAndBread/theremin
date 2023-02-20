@@ -2,7 +2,7 @@ import type { Oscillator, Sampler, ToneAudioBuffer } from "tone";
 import type { Instrument } from "../lib/types";
 import { justIntonation } from "./just-intonation";
 import { equalTempered } from "./equal-tempered";
-import { localStorageWrite, attack, release } from "../lib/stores";
+import { attack, release, sustain, decay } from "../lib/stores";
 import samples from "./samples";
 
 const allInstruments: Instrument[] = [];
@@ -24,6 +24,17 @@ release.subscribe((value)=> {
     instrument.env.release = value;
   });
 })
+sustain.subscribe((value)=> {
+  getInstruments().forEach((instrument) => {
+    instrument.env.sustain = value;
+  });
+})
+decay.subscribe((value)=> {
+  getInstruments().forEach((instrument) => {
+    instrument.env.decay = value;
+  });
+})
+
 type OscillatorTypes = "sine" | "triangle" | "sawtooth" | "square"
 const nonPlayers = ["sine", "triangle", "sawtooth", "square"]
 

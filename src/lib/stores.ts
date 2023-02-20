@@ -7,6 +7,8 @@ export const baseLevel = localStorageWritable("baseLevel", 1);
 
 export const attack = localStorageWritable("attack", 0.3);
 export const release = localStorageWritable("release", 0.8);
+export const sustain = localStorageWritable("sustain", 0.5);
+export const decay = localStorageWritable("decay", 0.2);
 
 export const style = localStorageWritable("style", "cyberpunk");
 

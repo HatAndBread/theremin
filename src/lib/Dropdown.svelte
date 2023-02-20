@@ -20,7 +20,7 @@
   };
 </script>
 
-<div class="dropdown">
+<div class="dropdown w-full">
   <label tabindex="0" class={buttonClass} on:pointerdown={dropDown} bind:this={ref}
     >
     {#if $$slots.icon}

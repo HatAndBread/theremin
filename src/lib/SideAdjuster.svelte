@@ -55,7 +55,7 @@
     <input type="checkbox" class={switchColor} checked={on} bind:this={checkbox} on:touchstart={toggle} on:click={(e) => e.preventDefault()}/>
   </label>
 </div>
-<div bind:this={div} class="w-full h-[80px] bg-secondary text-xs text-center select-none border border-accent" on:touchmove={handleTouch} on:touchstart={handleTouch} on:touchend={handleTouchEnd}>
+<div bind:this={div} class="w-[72px] h-[72px] mx-auto bg-secondary text-xs text-center select-none border border-accent" on:touchmove={handleTouch} on:touchstart={handleTouch} on:touchend={handleTouchEnd}>
   <div bind:this={guide} class="absolute w-[12px] h-[12px] rounded-full bg-primary text-primary-content pointer-events-none"></div>
   {name}
 </div>
