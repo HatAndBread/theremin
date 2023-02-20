@@ -19,7 +19,7 @@ export const setEffectAdjusters = (name: EffectNames, values: {x: number, y: num
     e.wet.value = y;
   } else if (name === "shift") {
     const e = effect as FrequencyShifter;
-    e.frequency.rampTo(x * 100, 0.1)
+    e.frequency.rampTo(x * 500, 0.1)
     e.wet.value = y;
   } else {
     throw new Error("Unimplemented effect")
