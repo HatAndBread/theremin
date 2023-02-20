@@ -2,7 +2,7 @@ import type { Oscillator, Sampler, ToneAudioBuffer } from "tone";
 import type { Instrument } from "../lib/types";
 import { justIntonation } from "./just-intonation";
 import { equalTempered } from "./equal-tempered";
-import { attack, release, sustain, decay } from "../lib/stores";
+import { attack, release, sustain, decay, currentInstrument } from "../lib/stores";
 import samples from "./samples";
 
 const allInstruments: Instrument[] = [];
@@ -12,7 +12,7 @@ export const getControls = () => controls
 
 let buffers: { [key: string]: ToneAudioBuffer } = {};
 let baseLevel = 1;
-let currentBuffer = "sine";
+let currentBuffer = localStorage.getItem("currentInstrument") || "sine";
 
 attack.subscribe((value)=> {
   getInstruments().forEach((instrument) => {
@@ -38,7 +38,7 @@ decay.subscribe((value)=> {
 type OscillatorTypes = "sine" | "triangle" | "sawtooth" | "square"
 const nonPlayers = ["sine", "triangle", "sawtooth", "square"]
 
-export const setBuffer = (b: string) => {
+const setBuffer = (b: string) => {
   currentBuffer = b;
   if (nonPlayers.includes(b)) {
     getInstruments().forEach((instrument) => {
@@ -54,7 +54,8 @@ export const setBuffer = (b: string) => {
     instrument.player.buffer = buffers[b]
     instrument.player.start()
   })
-};
+}
+currentInstrument.subscribe((b: string) => setBuffer(b));
 
 export const s = import("tone").then((Tone) => {
   const loadBuffers = () => {

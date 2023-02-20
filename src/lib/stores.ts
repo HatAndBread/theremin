@@ -1,6 +1,8 @@
 import { writable } from 'svelte/store';
 import type {Writable} from "svelte/store"
 
+export const currentInstrument = localStorageWritable("currentInstrument", "sine");
+
 export const zoom = localStorageWritable("zoom", 12)
 
 export const baseLevel = localStorageWritable("baseLevel", 1);

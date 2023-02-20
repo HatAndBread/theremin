@@ -4,13 +4,12 @@
   import Dropdown from "./Dropdown.svelte";
   import EnvelopeAdjuster from "./EnvelopeAdjuster.svelte";
   import iconSrc from "../assets/instrument.svg";
-  import { setBuffer } from "../sound/sound";
-  import { localStorageWrite, baseLevel, attack, release, sustain, decay } from "./stores";
+  import { localStorageWrite, baseLevel, attack, release, sustain, decay, currentInstrument } from "./stores";
   import samples from "../sound/samples";
 
   let recordBtn: HTMLButtonElement;
   const selectInstrument = (name: string) => {
-    setBuffer(name);
+    localStorageWrite(currentInstrument, "currentInstrument", name);
   };
   const lower = () => {
     const { changeBaseLevel } = getControls();
@@ -48,7 +47,7 @@
 </script>
 
 <div class="absolute top-0 left-0 h-full w-[80px] bg-base-200">
-  <a href="#my-modal-2" class="w-full p-0 flex justify-center">
+  <a href="#my-modal-2" class="w-full p-0 flex justify-center mt-2">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
