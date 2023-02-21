@@ -8,29 +8,57 @@
   import samples from "../sound/samples";
 
   let recordBtn: HTMLButtonElement;
+  let lowerBtn: HTMLButtonElement;
+  let higherBtn: HTMLButtonElement;
+  let stopRecordBtn: HTMLButtonElement;
+  let isRecording = false;
+  let isPlayingRecording = false;
+  let recordingExists = false;
   const selectInstrument = (name: string) => {
     localStorageWrite(currentInstrument, "currentInstrument", name);
   };
-  const lower = () => {
+  const focus = (btn: HTMLButtonElement) => {
+    btn.classList.add("bg-primary-focus")
+    setTimeout(() => {
+      btn.classList.remove("bg-primary-focus")
+    }, 60);
+  }
+  const lower = (e) => {
+    e.preventDefault();
     const { changeBaseLevel } = getControls();
     const newLevel = $baseLevel / 2;
     localStorageWrite(baseLevel, "baseLevel", newLevel);
     changeBaseLevel(newLevel);
+    focus(lowerBtn);
   };
-  const higher = () => {
+  const higher = (e) => {
+    e.preventDefault();
     const { changeBaseLevel } = getControls();
     const newLevel = $baseLevel * 2;
     localStorageWrite(baseLevel, "baseLevel", newLevel);
     changeBaseLevel(newLevel);
+    focus(higherBtn);
   };
 
-  const record = () => {
-    getControls()?.record();
-    recordBtn.classList.add("bg-primary-focus");
-  };
-  const stopRecord = () => {
+  const stopRecord = (e) => {
+    if (isRecording) {
+      isPlayingRecording = true;
+    } else if (recordingExists) {
+      isPlayingRecording = !isPlayingRecording;
+    }
+    isRecording = false;
+    e.preventDefault();
     getControls()?.stopRecord();
     recordBtn.classList.remove("bg-primary-focus");
+  };
+
+  const record = (e) => {
+    if (isRecording) return;
+    recordingExists = true;
+    isRecording = !isRecording;
+    e.preventDefault();
+    getControls()?.record();
+    recordBtn.classList.add("bg-primary-focus");
   };
   const adjustAttack = (v: number) => {
     localStorageWrite(attack, "attack", v);
@@ -90,7 +118,7 @@
   <EnvelopeAdjuster name="sustain" handleChange={adjustSustain} defaultValue={$sustain}/>
   <EnvelopeAdjuster name="decay" handleChange={adjustDecay} defaultValue={$decay}/>
   <div class="w-full flex justify-center gap-2 mt-2">
-    <button class="bg-primary p-1 rounded active:bg-primary-focus" on:touchstart={lower}>
+    <button bind:this={lowerBtn} class="bg-primary p-1 rounded active:bg-primary-focus" on:touchstart={lower}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -106,7 +134,7 @@
         />
       </svg>
     </button>
-    <button class="bg-primary p-1 rounded active:bg-primary-focus" on:touchstart={higher}>
+    <button bind:this={higherBtn} class="bg-primary p-1 rounded active:bg-primary-focus" on:touchstart={higher}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -144,21 +172,27 @@
         />
       </svg>
     </button>
-    <button on:touchstart={stopRecord} class="bg-primary p-1 rounded active:bg-primary-focus">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-6 h-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 010 1.954l-7.108 4.061A1.125 1.125 0 013 16.811z"
-        />
-      </svg>
+    <button bind:this={stopRecordBtn} on:touchstart={stopRecord} class="{isPlayingRecording ? "bg-primary-focus p-1 rounded" : "bg-primary p-1 rounded" }">
+      {#if isRecording}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z" />
+        </svg>
+      {:else}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 010 1.954l-7.108 4.061A1.125 1.125 0 013 16.811z"
+          />
+        </svg>
+      {/if}
     </button>
   </div>
 </div>
