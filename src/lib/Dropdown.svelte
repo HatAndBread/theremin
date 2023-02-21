@@ -1,42 +1,47 @@
 <script lang="ts">
+  import {currentInstrument} from "./stores";
   export let buttonLabel: any;
   export let items: string[];
   export let buttonClass: string;
   export let onClick: (name: string) => any;
 
-  let ref: HTMLLabelElement;
-  const dropDown = (e: PointerEvent) => {
-    if (document.activeElement === ref) {
-      ref.blur();
-      e.preventDefault();
+  let ref: HTMLButtonElement;
+  let ulRef: HTMLUListElement;
+  const dropDown = (e: TouchEvent) => {
+    if (ulRef.classList.contains("!hidden")) {
+      ulRef.classList.remove("!hidden")
+    } else {
+      ulRef.classList.add("!hidden")
     }
   };
   const select = (e) => {
     const target = e.currentTarget as HTMLLIElement;
     const { name } = target.dataset;
     //@ts-ignore
-    setTimeout(() => document.activeElement.blur(), 200);
+    setTimeout(() => {
+      ulRef.classList.add("!hidden")
+    }, 200);
     onClick(name);
   };
 </script>
 
-<div class="dropdown w-full">
-  <label tabindex="0" class={buttonClass} on:pointerdown={dropDown} bind:this={ref}
+<div class="dropdown w-full flex justify-center">
+  <button class={buttonClass} on:touchstart={dropDown} bind:this={ref}
     >
     {#if $$slots.icon}
       <slot name="icon" />
     {:else}
       {buttonLabel}
     {/if}
-    </label
+    </button
   >
   <ul
-    tabindex="0"
-    class="dropdown-content menu shadow bg-base-100 rounded-box w-52 !fixed text-xs z-50"
+    class="menu shadow bg-base-100 rounded-box w-52 !fixed text-xs z-50 !hidden"
+    bind:this={ulRef}
   >
     {#each items as item, i}
-      <li on:click={select} data-name={item}>
-        <a>{item.charAt(0).toUpperCase() + item.substring(1, item.length)}</a>
+      <li on:touchstart={select} data-name={item} class="{$currentInstrument === item ? "bg-primary-focus text-primary-content" : ""}">
+        <a href="#">{item.charAt(0).toUpperCase() + item.substring(1, item.length)}</a>
       </li>
     {/each}
   </ul>
