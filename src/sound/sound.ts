@@ -13,6 +13,7 @@ export const getControls = () => controls
 let buffers: { [key: string]: ToneAudioBuffer } = {};
 let baseLevel = 1;
 let currentBuffer = localStorage.getItem("currentInstrument") || "sine";
+let theLooper;
 
 attack.subscribe((value)=> {
   getInstruments().forEach((instrument) => {
@@ -34,6 +35,8 @@ decay.subscribe((value)=> {
     instrument.env.decay = value;
   });
 })
+
+export const getLooper = () => theLooper;
 
 type OscillatorTypes = "sine" | "triangle" | "sawtooth" | "square"
 const nonPlayers = ["sine", "triangle", "sawtooth", "square"]
@@ -86,6 +89,7 @@ export const s = import("tone").then((Tone) => {
     const distortion = new Tone.Distortion(0).connect(shift);
     const vibrato = new Tone.Vibrato(0, 0).connect(distortion);
     const looper = new Tone.GrainPlayer().connect(delay)
+    theLooper = looper;
     for (let i = 0; i < 5; i++) {
       const gain = new Tone.Gain(0).connect(vibrato);
       const env = new Tone.AmplitudeEnvelope({

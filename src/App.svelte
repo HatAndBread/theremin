@@ -2,6 +2,7 @@
   import AudioRecorder from 'audio-recorder-polyfill'
   import PlayingArea from "./lib/PlayingArea.svelte"
   import SideAdjusters from "./lib/SideAdjusters.svelte"
+  import LooperArea from "./lib/LooperArea.svelte"
   import Nav from "./lib/Nav.svelte"
   import Modals from "./lib/Modals.svelte"
   import * as Tone from "tone";
@@ -20,6 +21,7 @@
 <main class="flex flex-col items-center justify-center gap-4 h-screen relative select-none">
   <SideAdjusters />
   <PlayingArea started={started}/>
+  <LooperArea />
   {#if !localStorage.getItem("used") && !started}
     <div class="bg-primary z-10 text-primary-content text-center m-4 flex flex-col items-center p-4 gap-4 translate-y-[-32px]">
       <span>NOTE: This application requires a touchscreen.</span>

@@ -73,7 +73,7 @@
   }
 </script>
 
-<div class="absolute top-0 left-[80px] w-[calc(100vw_-_80px)] h-full flex flex-col" on:touchstart={handleTouchStart} on:touchend={handleTouchMove} on:touchmove={handleTouchMove}>
+<div class="absolute top-0 left-[80px] w-[calc(100vw_-_160px)] h-full flex flex-col" on:touchstart={handleTouchStart} on:touchend={handleTouchMove} on:touchmove={handleTouchMove}>
   {#each [...Array(5)] as _, i}
     <div bind:this={fingerGuides[`fingerGuide${i + 1}`]} class="fixed w-screen h-[4px] bg-primary hidden"/>
   {/each}
