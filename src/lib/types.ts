@@ -15,3 +15,11 @@ export type Instrument = {
 };
 
 export type EffectNames = "vibrato" | "delay" | "distortion" | "shift";
+
+export type TheLooper = {
+  looper: Tone.GrainPlayer;
+  distortion: Tone.Distortion;
+  vibrato: Tone.Vibrato;
+  shift: Tone.FrequencyShifter;
+  delay: Tone.PingPongDelay;
+};

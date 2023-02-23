@@ -24,7 +24,7 @@
     }, 60);
   }
   const lower = (e) => {
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
     const { changeBaseLevel } = getControls();
     const newLevel = $baseLevel / 2;
     localStorageWrite(baseLevel, "baseLevel", newLevel);
@@ -40,14 +40,14 @@
     focus(higherBtn);
   };
 
-  const stopRecord = (e) => {
+  const stopRecord = (e: TouchEvent) => {
     if (isRecording) {
       isPlayingRecording = true;
     } else if (recordingExists) {
       isPlayingRecording = !isPlayingRecording;
     }
     isRecording = false;
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
     getControls()?.stopRecord();
     recordBtn.classList.remove("bg-primary-focus");
   };

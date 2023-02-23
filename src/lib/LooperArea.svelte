@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type {GrainPlayer} from "tone"
+  import type {TheLooper} from "./types";
+  import SideAdjuster from "./SideAdjuster.svelte";
   import {getLooper} from "../sound/sound";
   let ref: HTMLDivElement;
   let indicator: HTMLDivElement;
@@ -7,26 +8,38 @@
     e.preventDefault();
     e.stopPropagation();
     const touch = e.targetTouches[0];
-    const looper = getLooper() as GrainPlayer;
+    const {looper} = getLooper()
     if (!looper || !ref) return;
 
     const {height} = ref.getBoundingClientRect();
     const middle = height / 2;
     const note = touch.clientY - middle;
     indicator.style.top = `${touch.clientY}px`;
-    console.log(note)
     looper.grainSize = 0.1
-    looper.overlap = 0.1;
+    looper.overlap = 0.1
     looper.detune = note * 10;
   }
   const handleEnd = (e: TouchEvent) => {
-    const looper = getLooper() as GrainPlayer;
+    const {looper} = getLooper();
     if (!looper || !ref) return;
     looper.detune = 0;
+    looper.grainSize = 0.1
+    looper.overlap = 0.1
     indicator.style.top = `50%`;
   } 
 </script>
 
-<div bind:this={ref} class="fixed top-0 right-0 h-full w-[80px] bg-base-200" on:touchmove={handleTouch} on:touchstart={handleTouch} on:touchend={handleEnd}>
-  <div bind:this={indicator} class="h-2 w-full bg-primary absolute top-[50%]"></div>
+<div class="fixed top-0 right-0 h-full w-[80px] bg-base-200">
+  <div class="relative text-[9px] text-center w-[80px] bg-primary z-10">Looper Pitch</div>
+  <div bind:this={ref} class="absolute top-0 right-0 h-[30%] w-[80px] bg-primary" on:touchmove={handleTouch} on:touchstart={handleTouch} on:touchend={handleEnd}>
+    <div bind:this={indicator} class="h-2 w-full bg-secondary absolute top-[30%]"></div>
+  </div>
+  <div class="absolute top-[30%] flex flex-col items-center">
+    <div class="mx-1">
+      <SideAdjuster name="vibrato" switchColor="toggle toggle-success toggle-sm" looper={true}></SideAdjuster>
+    </div> 
+    <SideAdjuster name="delay" switchColor="toggle toggle-success toggle-sm" looper={true}></SideAdjuster>
+    <SideAdjuster name="distortion" switchColor="toggle toggle-success toggle-sm" looper={true}></SideAdjuster>
+    <SideAdjuster name="shift" switchColor="toggle toggle-success toggle-sm" looper={true}></SideAdjuster>
+  </div>
 </div>

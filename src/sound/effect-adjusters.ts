@@ -1,10 +1,10 @@
 import type {Vibrato, PingPongDelay, Distortion, FrequencyShifter} from "tone"
 import type {EffectNames} from "../lib/types";
-import { getInstruments } from "./sound";
+import { getInstruments, getLooper } from "./sound";
 
-export const setEffectAdjusters = (name: EffectNames, values: {x: number, y: number}) => {
+export const setEffectAdjusters = (name: EffectNames, values: {x: number, y: number}, looper: boolean) => {
   let {x, y} = values;
-  const effect = getInstruments()[0][name];
+  const effect = looper ? getLooper()[name] : getInstruments()[0][name];
   if (name === "vibrato") {
     const e = effect as Vibrato;
     e.depth.rampTo(x / 1.5, 0.2)

@@ -1,5 +1,5 @@
 import type { Oscillator, Sampler, ToneAudioBuffer } from "tone";
-import type { Instrument } from "../lib/types";
+import type { Instrument, TheLooper } from "../lib/types";
 import { justIntonation } from "./just-intonation";
 import { equalTempered } from "./equal-tempered";
 import { shift, attack, release, sustain, decay, currentInstrument } from "../lib/stores";
@@ -13,7 +13,7 @@ export const getControls = () => controls
 let buffers: { [key: string]: ToneAudioBuffer } = {};
 let baseLevel = 1;
 let currentBuffer = localStorage.getItem("currentInstrument") || "sine";
-let theLooper;
+let theLooper: TheLooper;
 
 attack.subscribe((value)=> {
   getInstruments().forEach((instrument) => {
@@ -85,11 +85,15 @@ export const s = import("tone").then((Tone) => {
       },
     }).connect(recorder).toDestination();
     const delay = new Tone.PingPongDelay(0, 0).connect(multiband);
-    const shift = new Tone.FrequencyShifter(44).connect(delay);
+    const shift = new Tone.FrequencyShifter(0).connect(delay);
     const distortion = new Tone.Distortion(0).connect(shift);
     const vibrato = new Tone.Vibrato(0, 0).connect(distortion);
-    const looper = new Tone.GrainPlayer().connect(delay)
-    theLooper = looper;
+    const loopDelay = new Tone.PingPongDelay(0, 0).connect(multiband);
+    const loopShift = new Tone.FrequencyShifter(0).connect(loopDelay);
+    const loopDistortion = new Tone.Distortion(0).connect(loopShift);
+    const loopVibrato = new Tone.Vibrato(0, 0).connect(loopDistortion);
+    const looper = new Tone.GrainPlayer({detune: 0}).connect(loopVibrato);
+    theLooper = {looper, delay: loopDelay, shift: loopShift, distortion: loopDistortion, vibrato: loopVibrato};
     for (let i = 0; i < 5; i++) {
       const gain = new Tone.Gain(0).connect(vibrato);
       const env = new Tone.AmplitudeEnvelope({
@@ -211,7 +215,7 @@ export const s = import("tone").then((Tone) => {
         return;
       }
       if (recorder.state !== "started") {
-        looper.start();
+        if (looper.loaded) looper.start();
         return;
       }
       const recording = await recorder.stop();
