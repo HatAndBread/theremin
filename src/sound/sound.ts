@@ -131,6 +131,7 @@ export const s = import("tone").then((Tone) => {
     ) => {
       instrument.frequency = frequency;
       if (firstTouch) {
+        instrument.player.restart();
         instrument.player.playbackRate = ((frequency * baseLevel) / startFrequency);
         instrument.oscillator.frequency.rampTo(frequency * baseLevel, 0.1)
         return;

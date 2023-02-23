@@ -30,9 +30,9 @@
 </script>
 
 <div class="fixed top-0 right-0 h-full w-[80px] bg-base-200">
-  <div class="relative text-[9px] text-center w-[80px] bg-primary z-10">Looper Pitch</div>
-  <div bind:this={ref} class="absolute top-0 right-0 h-[30%] w-[80px] bg-primary" on:touchmove={handleTouch} on:touchstart={handleTouch} on:touchend={handleEnd}>
-    <div bind:this={indicator} class="h-2 w-full bg-secondary absolute top-[30%]"></div>
+  <div bind:this={ref} class="absolute top-0 right-0 h-[30%] w-[72px] bg-secondary mr-[4px] mt-[4px] border-accent border" on:touchmove={handleTouch} on:touchstart={handleTouch} on:touchend={handleEnd}>
+    <div class="relative text-[9px] text-center w-[72px] text-secondary-content z-10">Looper Pitch</div>
+    <div bind:this={indicator} class="h-2 w-full bg-primary absolute top-[30%]"></div>
   </div>
   <div class="absolute top-[30%] flex flex-col items-center">
     <div class="mx-1">
