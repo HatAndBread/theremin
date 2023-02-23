@@ -7,6 +7,7 @@ export const zoom = localStorageWritable("zoom", 12)
 
 export const baseLevel = localStorageWritable("baseLevel", 1);
 
+export const loopVol = localStorageWritable("loopVol", 0.5);
 export const shift = localStorageWritable("shift", 0);
 export const attack = localStorageWritable("attack", 0.3);
 export const release = localStorageWritable("release", 0.8);

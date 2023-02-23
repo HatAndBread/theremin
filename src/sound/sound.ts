@@ -2,7 +2,7 @@ import type { Oscillator, Sampler, ToneAudioBuffer } from "tone";
 import type { Instrument, TheLooper } from "../lib/types";
 import { justIntonation } from "./just-intonation";
 import { equalTempered } from "./equal-tempered";
-import { shift, attack, release, sustain, decay, currentInstrument } from "../lib/stores";
+import { loopVol, attack, release, sustain, decay, currentInstrument } from "../lib/stores";
 import samples from "./samples";
 
 const allInstruments: Instrument[] = [];
@@ -35,7 +35,12 @@ decay.subscribe((value)=> {
     instrument.env.decay = value;
   });
 })
-
+loopVol.subscribe((value) => {
+  if (!theLooper) return;
+  const newVolume = (value * 20) - 10;
+  console.log(newVolume)
+  theLooper.looper.volume.rampTo(newVolume)
+})
 export const getLooper = () => theLooper;
 
 type OscillatorTypes = "sine" | "triangle" | "sawtooth" | "square"
