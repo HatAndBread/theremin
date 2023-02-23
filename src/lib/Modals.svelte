@@ -18,6 +18,7 @@
   <div class="modal-box">
     <h3 class="font-bold text-lg">Settings</h3>
     <div class="modal-action flex flex-col items-end gap-2">
+      <button class="btn w-full" on:click={()=>window.location.reload()}>Refresh</button>
       <select class="select w-full max-w-xs" on:change={changeStyle}>
         <option disabled selected>Style</option>
         {#each styles as style}
