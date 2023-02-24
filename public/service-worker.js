@@ -18,9 +18,13 @@ const FILES_TO_CACHE = [
 self.addEventListener("install", async () => {
   const cache = await caches.open(CACHE_NAME);
 
-  await cache.addAll(FILES_TO_CACHE);
-
-  self.skipWaiting(); // move into the activate phase
+  try {
+    await cache.addAll(FILES_TO_CACHE);
+    self.skipWaiting(); // move into the activate phase
+  } catch(e) {
+    console.error(e)
+    self.skipWaiting(); // move into the activate phase
+  }
 });
 
 self.addEventListener("activate", async () => {
