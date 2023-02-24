@@ -1,18 +1,18 @@
 const CACHE_NAME = "cache-v1";
 
 const FILES_TO_CACHE = [
-  "./index.html",
-  "./manifest.json",
-  "./friend.webp",
-  "./organ.wav",
-  "./harmonium.mp3",
-  "./tambura.mp3",
-  "./singing.mp3",
-  "./voice.mp3",
-  "./tuba.wav",
-  "./radioBuzz.mp3",
-  "./static.mp3",
-  "./glitch.mp3"
+  "/index.html",
+  "/manifest.json",
+  "/friend.webp",
+  "/organ.wav",
+  "/harmonium.mp3",
+  "/tambura.mp3",
+  "/singing.mp3",
+  "/voice.mp3",
+  "/tuba.wav",
+  "/radioBuzz.mp3",
+  "/static.mp3",
+  "/glitch.mp3"
 ];
 
 self.addEventListener("install", async () => {
