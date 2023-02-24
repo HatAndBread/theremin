@@ -1,22 +1,22 @@
 const CACHE_NAME = "cache-v1";
 
 const FILES_TO_CACHE = [
-  "./index.html",
-  "./manifest.json",
-  "./friend.webp",
-  "./sine.mp3",
-  "./triangle.mp3",
-  "./square.mp3",
-  "./sawtooth.mp3",
-  "./organ.wav",
-  "./harmonium.mp3",
-  "./tambura.mp3",
-  "./singing.mp3",
-  "./voice.mp3",
-  "./tuba.wav",
-  "./radioBuzz.mp3",
-  "./static.mp3",
-  "./glitch.mp3"
+  "./public/index.html",
+  "./public/manifest.json",
+  "./public/friend.webp",
+  "./public/sine.mp3",
+  "./public/triangle.mp3",
+  "./public/square.mp3",
+  "./public/sawtooth.mp3",
+  "./public/organ.wav",
+  "./public/harmonium.mp3",
+  "./public/tambura.mp3",
+  "./public/singing.mp3",
+  "./public/voice.mp3",
+  "./public/tuba.wav",
+  "./public/radioBuzz.mp3",
+  "./public/static.mp3",
+  "./public/glitch.mp3"
 ];
 
 self.addEventListener("install", async () => {
