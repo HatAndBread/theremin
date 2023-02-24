@@ -1,16 +1,16 @@
-import sine from "../assets/sine.mp3";
-import triangle from "../assets/triangle.mp3";
-import square from "../assets/square.mp3";
-import sawtooth from "../assets/sawtooth.mp3";
-import organ from "../assets/organ.wav"
-import harmonium from "../assets/harmonium.mp3"
-import tambura from "../assets/tambura.mp3"
-import singing from "../assets/singing.mp3"
-import voice from "../assets/voice.mp3"
-import tuba from "../assets/tuba.wav";
-import radio from "../assets/radioBuzz.mp3"
-import statik from "../assets/static.mp3";
-import glitch from "../assets/glitch.mp3";
+const sine = "./sine.mp3"
+const triangle = "./triangle.mp3";
+const square = "./square.mp3";
+const sawtooth = "./sawtooth.mp3";
+const organ = "./organ.wav"
+const harmonium = "./harmonium.mp3"
+const tambura = "./tambura.mp3"
+const singing = "./singing.mp3"
+const voice = "./voice.mp3"
+const tuba = "./tuba.wav";
+const radio = "./radioBuzz.mp3"
+const statik = "./static.mp3";
+const glitch = "./glitch.mp3";
 
 export default {
   sine,

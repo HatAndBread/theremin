@@ -1,7 +1,7 @@
 {
   "name": "Web Theremin",
   "short_name": "Theremin",
-  "start_url": "./index.html",
+  "start_url": "https://the-theremin.vercel.app/index.html",
   "display": "standalone",
   "background_color": "#FFEE03",
   "theme_color": "#413F00",
