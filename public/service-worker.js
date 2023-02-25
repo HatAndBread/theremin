@@ -32,8 +32,7 @@ const cacheFiles = () => {
   });
 }
 self.addEventListener("install", async () => {
-  const result = await cacheFiles();
-  console.log(result)
+  await cacheFiles();
 
   self.skipWaiting(); // move into the activate phase
 });
