@@ -12,7 +12,9 @@ const FILES_TO_CACHE = [
   "/radioBuzz.mp3",
   "/static.mp3",
   "/glitch.mp3",
-  "/manifest.json"
+  "/manifest.json",
+  "/monochrome.png",
+  "/android-chrome-512x512.png"
 ];
 
 const cacheFiles = () => {
