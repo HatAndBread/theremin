@@ -11,7 +11,8 @@ const FILES_TO_CACHE = [
   "/tuba.wav",
   "/radioBuzz.mp3",
   "/static.mp3",
-  "/glitch.mp3"
+  "/glitch.mp3",
+  "/manifest.json"
 ];
 
 const cacheFiles = () => {
