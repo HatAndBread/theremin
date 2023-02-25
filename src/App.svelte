@@ -18,7 +18,7 @@
   }
 </script>
 
-<main class="flex flex-col items-center justify-center gap-4 h-screen relative select-none">
+<main class="fixed top-0 flex flex-col items-center justify-center gap-4 h-screen relative select-none overflow-hidden">
   <SideAdjusters />
   <PlayingArea started={started}/>
   <LooperArea />
