@@ -15,16 +15,28 @@ const FILES_TO_CACHE = [
   "/glitch.mp3"
 ];
 
+const cacheFiles = () => {
+  return new Promise(async (resolve, reject) => {
+    const cache = await caches.open(CACHE_NAME);
+    let total = 0;
+    FILES_TO_CACHE.forEach((file) => {
+      cache.add(file)
+        .then(() => {
+          total += 1;
+          if (total === FILES_TO_CACHE.length) resolve(true);
+        })
+        .catch((e) => {
+          console.log(e);
+          reject(e)
+        });
+    })
+  });
+}
 self.addEventListener("install", async () => {
-  const cache = await caches.open(CACHE_NAME);
+  const result = await cacheFiles();
+  console.log(result)
 
-  try {
-    await cache.addAll(FILES_TO_CACHE);
-    self.skipWaiting(); // move into the activate phase
-  } catch(e) {
-    console.error(e)
-    self.skipWaiting(); // move into the activate phase
-  }
+  self.skipWaiting(); // move into the activate phase
 });
 
 self.addEventListener("activate", async () => {
