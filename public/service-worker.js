@@ -2,7 +2,6 @@ const CACHE_NAME = "cache-v1";
 
 const FILES_TO_CACHE = [
   "/index.html",
-  "/manifest.json",
   "/friend.webp",
   "/organ.wav",
   "/harmonium.mp3",
