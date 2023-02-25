@@ -26,7 +26,7 @@ const cacheFiles = () => {
           if (total === FILES_TO_CACHE.length) resolve(true);
         })
         .catch((e) => {
-          console.log(e);
+          console.log(e, file);
           reject(e)
         });
     })
