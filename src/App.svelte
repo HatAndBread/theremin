@@ -10,15 +10,45 @@
   if (!window.MediaRecorder) window.MediaRecorder = AudioRecorder
 
   let started = false;
+  let finger1: HTMLDivElement;
+  let finger2: HTMLDivElement;
+  let finger3: HTMLDivElement;
+  let finger4: HTMLDivElement;
+  let finger5: HTMLDivElement;
+
   const start = async () => {
     await Tone.start();
     window.started = true;
     started = true;
     localStorage.setItem("used", "1");
   }
+  const handleTouch = (e: TouchEvent) => {
+    const fingers = [finger1, finger2, finger3, finger4, finger5];
+    Array.from(e.touches).forEach((touch, i) => {
+      const {clientX, clientY} = touch;
+      fingers[i].classList.remove("hidden");
+      fingers[i].style.left = `${clientX - 9}px`;
+      fingers[i].style.top = `${clientY - 9}px`;
+    })
+  }
+  const handleTouchEnd = (e: TouchEvent) => {
+    const fingers = [finger1, finger2, finger3, finger4, finger5];
+    const numberOfTouchRemaining = fingers.length - e.touches.length
+    fingers.forEach((finger, i) => {
+      if (i >= e.touches.length) {
+        finger.classList.add("hidden");
+        finger.style.top = `-1000px`;
+      }
+    });
+  }
 </script>
 
-<main class="fixed top-0 flex flex-col items-center justify-center gap-4 h-screen relative select-none overflow-hidden">
+<main class="fixed top-0 flex flex-col items-center justify-center gap-4 h-screen relative select-none overflow-hidden" on:touchmove={handleTouch} on:touchstart={handleTouch} on:touchend={handleTouchEnd}>
+  <div class="fixed top-0 left-0 w-[18px] h-[18px] bg-gray-200 z-50 rounded-full opacity-50 hidden" bind:this={finger1}></div>
+  <div class="fixed top-0 left-0 w-[18px] h-[18px] bg-gray-200 z-50 rounded-full opacity-50 hidden" bind:this={finger2}></div>
+  <div class="fixed top-0 left-0 w-[18px] h-[18px] bg-gray-200 z-50 rounded-full opacity-50 hidden" bind:this={finger3}></div>
+  <div class="fixed top-0 left-0 w-[18px] h-[18px] bg-gray-200 z-50 rounded-full opacity-50 hidden" bind:this={finger4}></div>
+  <div class="fixed top-0 left-0 w-[18px] h-[18px] bg-gray-200 z-50 rounded-full opacity-50 hidden" bind:this={finger5}></div>
   <SideAdjusters />
   <PlayingArea started={started}/>
   <LooperArea />
