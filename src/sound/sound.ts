@@ -244,6 +244,12 @@ export const s = import("tone").then((Tone) => {
         updateFrequency(instrument.frequency, instrument);
       })
     }
+    window.onblur = () => {
+      if (looper.state === "started") looper.stop();
+      getInstruments().forEach((i) => {
+        i.env.triggerRelease()
+      })
+    }
 
     controls = { start, stop, play, record, stopRecord, changeBaseLevel};
     return controls;
