@@ -22,7 +22,7 @@
   }
 </script>
 
-<div bind:this={ref} class="w-[calc(100%_-_16px)] select-none bg-secondary mx-auto my-2 text-[10px] text-center relative rounded border border-primary" on:touchstart={handleTouch} on:touchmove={handleTouch}>
-  <div bind:this={guide} class="absolute h-full w-[10px] rounded-full bg-primary text-secondary-content pointer-events-none translate-x-[-5px]" style={`left: ${startPos}px;`}></div>
+<div bind:this={ref} class="w-[calc(100%_-_16px)] select-none bg-secondary mx-auto my-2 text-[10px] text-center relative rounded border border-primary  text-secondary-content" on:touchstart={handleTouch} on:touchmove={handleTouch}>
+  <div bind:this={guide} class="absolute h-full w-[10px] rounded-full bg-primary pointer-events-none translate-x-[-5px]" style={`left: ${startPos}px;`}></div>
   <span>{name}</span>
 </div>
