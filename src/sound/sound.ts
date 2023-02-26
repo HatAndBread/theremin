@@ -1,8 +1,8 @@
 import type { Oscillator, Sampler, ToneAudioBuffer } from "tone";
 import type { Instrument, TheLooper } from "../lib/types";
-import { justIntonation } from "./just-intonation";
+import { noteFrequencyMap } from "./note-frequency-map";
 import { equalTempered } from "./equal-tempered";
-import { loopVol, attack, release, sustain, decay, currentInstrument } from "../lib/stores";
+import { loopVol, attack, release, sustain, decay, currentInstrument, baseNote } from "../lib/stores";
 import samples from "./samples";
 
 const allInstruments: Instrument[] = [];
@@ -14,6 +14,9 @@ let buffers: { [key: string]: ToneAudioBuffer } = {};
 let baseLevel = 1;
 let currentBuffer = localStorage.getItem("currentInstrument") || "sine";
 let theLooper: TheLooper;
+
+let startFrequency = parseFloat(localStorage.getItem("baseNote")) || noteFrequencyMap.C3;
+const scale = equalTempered;
 
 attack.subscribe((value)=> {
   getInstruments().forEach((instrument) => {
@@ -38,9 +41,12 @@ decay.subscribe((value)=> {
 loopVol.subscribe((value) => {
   if (!theLooper) return;
   const newVolume = (value * 20) - 10;
-  console.log(newVolume)
   theLooper.looper.volume.rampTo(newVolume)
-})
+});
+baseNote.subscribe((value) => {
+  startFrequency = parseFloat(value);
+});
+
 export const getLooper = () => theLooper;
 
 type OscillatorTypes = "sine" | "triangle" | "sawtooth" | "square"
@@ -125,9 +131,6 @@ export const s = import("tone").then((Tone) => {
         interval: null,
       });
     }
-
-    const startFrequency = 132;
-    const scale = justIntonation;
 
     const updateFrequency = (
       frequency: number,

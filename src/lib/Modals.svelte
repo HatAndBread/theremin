@@ -1,11 +1,15 @@
 <script lang="ts">
-  import {zoom, localStorageWrite, style} from "./stores"
-  import Dropdown from "./Dropdown.svelte";
+  import {zoom, localStorageWrite, style, baseNote} from "./stores"
+  import {noteFrequencyMap} from "../sound/note-frequency-map";
   const handleZoomChange = (e: Event) => {
     const target = e.target as HTMLInputElement;
     localStorageWrite(zoom, "zoom", target.value)
   }
-  const selectStyle = () => {}
+  const changeBaseNote = (e: Event) => {
+    const {value} = e.currentTarget as HTMLSelectElement
+    const b = noteFrequencyMap[value];
+    localStorageWrite(baseNote, "baseNote", b)
+  }
   const styles = ["cyberpunk", "cupcake", "emerald", "valentine", "forest", "dracula", "acid"]
   const changeStyle = (e: Event) => {
     const {value} = e.currentTarget as HTMLSelectElement
@@ -19,6 +23,12 @@
     <h3 class="font-bold text-lg">Settings</h3>
     <div class="modal-action flex flex-col items-end gap-2">
       <button class="btn w-full" on:click={()=>window.location.reload()}>Refresh</button>
+      <select class="select w-full max-w-xs" on:change={changeBaseNote}>
+        <option disabled selected>Base Note</option>
+        {#each Object.keys(noteFrequencyMap) as note}
+          <option>{note}</option>
+        {/each}
+      </select>
       <select class="select w-full max-w-xs" on:change={changeStyle}>
         <option disabled selected>Style</option>
         {#each styles as style}

@@ -1,10 +1,12 @@
 <script lang="ts">
   import {s} from "../sound/sound"
+  import {noteFrequencyMap} from "../sound/note-frequency-map";
+  import {zoom, baseLevel, baseNote} from "./stores"
+
   let instrument;
   s.then((i) => {
     instrument = i;
   });
-  import {zoom, baseLevel} from "./stores"
   export let started:boolean;
   let priorNumberOfTouches = 0;
   const fingerGuides: {[key: string]: null | HTMLDivElement} = {
@@ -14,6 +16,9 @@
     fingerGuide4: null,
     fingerGuide5: null,
   }
+  let currentNoteIndex;
+  $: currentNoteIndex = Object.values(noteFrequencyMap).indexOf($baseNote);
+  let noteNames = Object.keys(noteFrequencyMap).map((n) => n.replace(/[0-9]/g, ""));
   const notes = [...Array(96)].map((_, i) => i)
   const blur = () => {
     // @ts-ignore
@@ -80,23 +85,23 @@
   {#each notes as note (note)}
   {#if !((note%12)%12)}
     <div class={`border-t border-error border-t-[5px] text-accent flex items-center notes`} data-note={note} id={`note-${note}`} style="font-size: {$zoom}px;">
-      {note}
+      {noteNames[(note + currentNoteIndex) % 12]}
     </div>
   {:else if ((note%12) === 4) || (note%12 === 2)}
     <div class={`border-t border-accent border-t-[2px] text-accent flex items-center notes`} data-note={note} id={`note-${note}`} style="font-size: {$zoom}px;">
-      {note}
+      {noteNames[(note + currentNoteIndex) % 12]}
     </div>
   {:else if !((note%12)%7)}
     <div class={`border-t border-info border-t-[3px] text-accent flex items-center notes`} data-note={note} id={`note-${note}`} style="font-size: {$zoom}px;">
-      {note}
+      {noteNames[(note + currentNoteIndex) % 12]}
     </div>
   {:else if !((note%12)%5)}
     <div class={`border-t border-success border-t-[2px] text-accent flex items-center notes`} data-note={note} id={`note-${note}`} style="font-size: {$zoom}px;">
-      {note}
+      {noteNames[(note + currentNoteIndex) % 12]}
     </div>
   {:else}
     <div class={`border-t border-warning border-t-[1px] text-accent flex items-center notes`} data-note={note} id={`note-${note}`} style="font-size: {$zoom}px;">
-      {note}
+      {noteNames[(note + currentNoteIndex) % 12]}
     </div>
   {/if}
   {/each}

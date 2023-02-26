@@ -1,11 +1,13 @@
 import { writable } from 'svelte/store';
 import type {Writable} from "svelte/store"
+import { noteFrequencyMap } from '../sound/note-frequency-map';
 
 export const currentInstrument = localStorageWritable("currentInstrument", "sine");
 
 export const zoom = localStorageWritable("zoom", 12)
 
 export const baseLevel = localStorageWritable("baseLevel", 1);
+export const baseNote = localStorageWritable("baseNote", noteFrequencyMap.C3);
 
 export const loopVol = localStorageWritable("loopVol", 0.5);
 export const shift = localStorageWritable("shift", 0);
@@ -23,6 +25,6 @@ export function localStorageWrite (writable: Writable<number | string>,  name: s
 
 function localStorageWritable(name: string, defaultValue: any) {
   let storedValue:string | number = localStorage.getItem(name);
-  if (parseInt(storedValue)) storedValue = parseInt(storedValue);
+  if (parseFloat(storedValue)) storedValue = parseFloat(storedValue);
   return writable(storedValue || defaultValue)
 }
