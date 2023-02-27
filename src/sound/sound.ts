@@ -273,13 +273,6 @@ export const s = import("tone").then((Tone) => {
         updateFrequency(instrument.frequency, instrument);
       })
     }
-    window.onblur = () => {
-      Tone.Transport.cancel()
-      getInstruments().forEach((i) => {
-        i.env.triggerRelease()
-      })
-    }
-
     controls = { start, stop, play, record, stopRecord, changeBaseLevel};
     return controls;
   });

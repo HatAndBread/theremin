@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getControls } from "../sound/sound";
+  import { getControls, getInstruments } from "../sound/sound";
   import SideAdjuster from "./SideAdjuster.svelte";
   import Dropdown from "./Dropdown.svelte";
   import EnvelopeAdjuster from "./EnvelopeAdjuster.svelte";
@@ -40,18 +40,23 @@
     focus(higherBtn);
   };
 
-  const stopRecord = (e: TouchEvent) => {
+  const stopRecord = (e?: TouchEvent) => {
     if (isRecording) {
       isPlayingRecording = true;
     } else if (recordingExists) {
       isPlayingRecording = !isPlayingRecording;
-    }
+    } else if (!recordingExists) return
     isRecording = false;
-    if (e.cancelable) e.preventDefault();
+    if (e?.cancelable) e.preventDefault();
     getControls()?.stopRecord();
     recordBtn.classList.remove("bg-primary-focus");
   };
-
+  window.onblur = () => {
+    if (isPlayingRecording) stopRecord();
+    getInstruments().forEach((i) => {
+      i.env.triggerRelease()
+    })
+  }
   const record = (e) => {
     if (isRecording) return;
     recordingExists = true;
@@ -172,7 +177,7 @@
         />
       </svg>
     </button>
-    <button bind:this={stopRecordBtn} on:touchstart={stopRecord} class="{isPlayingRecording ? "bg-primary-focus p-1 rounded" : "bg-primary p-1 rounded" }">
+    <button id="play-button" bind:this={stopRecordBtn} on:touchstart={stopRecord} class="{isPlayingRecording ? "bg-primary-focus p-1 rounded" : "bg-primary p-1 rounded" }">
       {#if isRecording}
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z" />

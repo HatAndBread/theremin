@@ -40,10 +40,10 @@
       <EnvelopeAdjuster name="Loop Vol" handleChange={handleVolume} defaultValue={$loopVol}/>
     </div>
     <div class="mx-1">
-      <SideAdjuster name="vibrato" switchColor="toggle toggle-success toggle-sm" looper={true}></SideAdjuster>
+      <SideAdjuster name="vibrato" switchColor="toggle toggle-accent toggle-sm" looper={true}></SideAdjuster>
     </div> 
-    <SideAdjuster name="delay" switchColor="toggle toggle-success toggle-sm" looper={true}></SideAdjuster>
-    <SideAdjuster name="distortion" switchColor="toggle toggle-success toggle-sm" looper={true}></SideAdjuster>
+    <SideAdjuster name="delay" switchColor="toggle toggle-primary toggle-sm" looper={true}></SideAdjuster>
+    <SideAdjuster name="distortion" switchColor="toggle toggle-secondary toggle-sm" looper={true}></SideAdjuster>
     <SideAdjuster name="shift" switchColor="toggle toggle-success toggle-sm" looper={true}></SideAdjuster>
   </div>
 </div>
