@@ -255,8 +255,7 @@ export const s = import("tone").then((Tone) => {
       const recording = await recorder.stop();
       const url = URL.createObjectURL(recording);
       const buff = new Tone.ToneAudioBuffer(url, () => {
-        looper1.stop();
-        looper2.stop();
+        newLooper.stop();
         looper1.buffer = buff;
         looper2.buffer = buff;
         startTransport();
