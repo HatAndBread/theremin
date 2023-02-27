@@ -111,7 +111,7 @@ export const s = import("tone").then((Tone) => {
     const looper2 = new Tone.Player().connect(loopVibrato);
     const newLooper = {
       stop: () => {
-        [looper1, looper].forEach((l) => l.stop());
+        [looper1, looper2].forEach((l) => l.stop());
         Tone.Transport.cancel();
       },
       isStarted: () => looper1.state === "started" || looper2.state === "started",
