@@ -239,8 +239,6 @@ export const s = import("tone").then((Tone) => {
       looper1.fadeOut = .2
       looper2.fadeIn = .2
       looper2.fadeOut = .2
-      looper1.stop()
-      looper2.stop()
       Tone.Transport.scheduleRepeat((time) => {
         const toStart = isLoop1 ? looper1 : looper2;
         toStart.start()
@@ -254,6 +252,7 @@ export const s = import("tone").then((Tone) => {
         return;
       }
       if (recorder.state !== "started") {
+        newLooper.stop()
         startTransport()
         return;
       }
