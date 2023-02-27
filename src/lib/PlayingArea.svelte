@@ -95,7 +95,7 @@
     <div class={`border-t border-info border-t-[3px] text-info flex items-center notes`} data-note={note} id={`note-${note}`} style="font-size: {$zoom}px;">
       {noteNames[(note + currentNoteIndex) % 12] + "^"}
     </div>
-  {:else if !((note%12)%5)}
+  {:else if ((note%12) === 5) || !((note%12)%9)}
     <div class={`border-t border-success border-t-[2px] text-success flex items-center notes`} data-note={note} id={`note-${note}`} style="font-size: {$zoom}px;">
       {noteNames[(note + currentNoteIndex) % 12] + "^"}
     </div>

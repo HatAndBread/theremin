@@ -100,6 +100,8 @@ export const s = import("tone").then((Tone) => {
     const delay = new Tone.PingPongDelay(0, 0).connect(multiband);
     const shift = new Tone.FrequencyShifter(0).connect(delay);
     const distortion = new Tone.Distortion(0).connect(shift);
+    distortion.wet.value = 0;
+    distortion.distortion = 0;
     const vibrato = new Tone.Vibrato(0, 0).connect(distortion);
     const loopDelay = new Tone.PingPongDelay(0, 0).connect(multiband);
     const loopShift = new Tone.FrequencyShifter(0).connect(loopDelay);
@@ -117,10 +119,6 @@ export const s = import("tone").then((Tone) => {
       isStarted: () => looper1.state === "started" || looper2.state === "started",
       players: [looper1, looper2]
     }
-    looper1.fadeIn = .2
-    looper1.fadeOut = .2
-    looper2.fadeIn = .2
-    looper2.fadeOut = .2
     theLooper = {looper: newLooper, delay: loopDelay, shift: loopShift, distortion: loopDistortion, vibrato: loopVibrato};
     for (let i = 0; i < 5; i++) {
       const gain = new Tone.Gain(0).connect(vibrato);
@@ -236,6 +234,10 @@ export const s = import("tone").then((Tone) => {
     }
 
     const startTransport = () => {
+      looper1.fadeIn = .2
+      looper1.fadeOut = .2
+      looper2.fadeIn = .2
+      looper2.fadeOut = .2
       Tone.Transport.scheduleRepeat((time) => {
         const toStart = isLoop1 ? looper1 : looper2;
         toStart.start()
@@ -270,7 +272,7 @@ export const s = import("tone").then((Tone) => {
       })
     }
     window.onblur = () => {
-      if (looper.state === "started") looper.stop();
+      Tone.Transport.cancel()
       getInstruments().forEach((i) => {
         i.env.triggerRelease()
       })
