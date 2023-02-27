@@ -28,13 +28,6 @@
   const handleVolume = (v) => {
     localStorageWrite(loopVol, "loopVol", v);
   }
-  const reverse = () => {
-    const looper = getLooper();
-    if (!looper) return;
-    looper.looper.players.forEach((player) => {
-      player.reverse = !player.reverse;
-    })
-  }
 </script>
 
 <div class="fixed top-0 right-0 h-full w-[80px] bg-base-200">
