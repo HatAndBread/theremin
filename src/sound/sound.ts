@@ -41,7 +41,9 @@ decay.subscribe((value)=> {
 loopVol.subscribe((value) => {
   if (!theLooper) return;
   const newVolume = (value * 20) - 10;
-  theLooper.looper.volume.rampTo(newVolume)
+  theLooper.looper.players.forEach((looper) => {
+    looper.volume.rampTo(newVolume)
+  })
 });
 baseNote.subscribe((value) => {
   startFrequency = parseFloat(value);
@@ -103,8 +105,23 @@ export const s = import("tone").then((Tone) => {
     const loopShift = new Tone.FrequencyShifter(0).connect(loopDelay);
     const loopDistortion = new Tone.Distortion(0).connect(loopShift);
     const loopVibrato = new Tone.Vibrato(0, 0).connect(loopDistortion);
-    const looper = new Tone.GrainPlayer({detune: 0}).connect(loopVibrato);
-    theLooper = {looper, delay: loopDelay, shift: loopShift, distortion: loopDistortion, vibrato: loopVibrato};
+    const looper = new Tone.GrainPlayer({detune: 0, overlap: 1}).connect(loopVibrato);
+    let isLoop1 = true
+    const looper1 = new Tone.Player().connect(loopVibrato);
+    const looper2 = new Tone.Player().connect(loopVibrato);
+    const newLooper = {
+      stop: () => {
+        [looper1, looper].forEach((l) => l.stop());
+        Tone.Transport.cancel();
+      },
+      isStarted: () => looper1.state === "started" || looper2.state === "started",
+      players: [looper1, looper2]
+    }
+    looper1.fadeIn = .2
+    looper1.fadeOut = .2
+    looper2.fadeIn = .2
+    looper2.fadeOut = .2
+    theLooper = {looper: newLooper, delay: loopDelay, shift: loopShift, distortion: loopDistortion, vibrato: loopVibrato};
     for (let i = 0; i < 5; i++) {
       const gain = new Tone.Gain(0).connect(vibrato);
       const env = new Tone.AmplitudeEnvelope({
@@ -218,22 +235,31 @@ export const s = import("tone").then((Tone) => {
       recorder.start();
     }
 
+    const startTransport = () => {
+      Tone.Transport.scheduleRepeat((time) => {
+        const toStart = isLoop1 ? looper1 : looper2;
+        toStart.start()
+        isLoop1 = !isLoop1
+      }, looper1.buffer.duration - 0.2);
+      Tone.Transport.start()
+    }
     async function stopRecord() {
-      if (looper.state === "started" && recorder.state !== "started") {
-        looper.stop();
+      if (newLooper.isStarted() && recorder.state !== "started") {
+        newLooper.stop();
         return;
       }
       if (recorder.state !== "started") {
-        if (looper.loaded) looper.start();
+        startTransport()
         return;
       }
       const recording = await recorder.stop();
       const url = URL.createObjectURL(recording);
       const buff = new Tone.ToneAudioBuffer(url, () => {
-        looper.stop();
-        looper.buffer = buff;
-        looper.loop = true;
-        looper.start();
+        looper1.stop();
+        looper2.stop();
+        looper1.buffer = buff;
+        looper2.buffer = buff;
+        startTransport();
       });
     }
 

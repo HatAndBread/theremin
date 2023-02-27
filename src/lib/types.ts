@@ -16,10 +16,15 @@ export type Instrument = {
 
 export type EffectNames = "vibrato" | "delay" | "distortion" | "shift";
 
+type Looper = {
+  stop: () => void;
+  isStarted: () => boolean;
+  players: Tone.Player[];
+}
 export type TheLooper = {
-  looper: Tone.GrainPlayer;
+  looper: Looper;
   distortion: Tone.Distortion;
   vibrato: Tone.Vibrato;
   shift: Tone.FrequencyShifter;
   delay: Tone.PingPongDelay;
-};
+}

@@ -13,19 +13,18 @@
     if (!looper || !ref) return;
 
     const {height} = ref.getBoundingClientRect();
-    const middle = height / 2;
-    const note = touch.clientY - middle;
+    const note = (touch.clientY / height) * 2
+    console.log(note)
     indicator.style.top = `${touch.clientY}px`;
-    looper.grainSize = 0.1
-    looper.overlap = 0.1
-    looper.detune = note * 10;
+    looper.players.forEach((player) => {
+      player.playbackRate = note;
+    })
   }
   const handleEnd = (e: TouchEvent) => {
     const {looper} = getLooper();
     if (!looper || !ref) return;
-    looper.detune = 0;
-    looper.grainSize = 0.1
-    looper.overlap = 0.1
+    looper.players.forEach((player) => {
+    })
     indicator.style.top = `50%`;
   } 
   const handleVolume = (v) => {
@@ -34,7 +33,9 @@
   const reverse = () => {
     const looper = getLooper()?.looper;
     if (!looper) return;
-    looper.buffer.reverse = !looper.buffer.reverse;
+    looper.players.forEach((player) => {
+      player.buffer.reverse = !player.buffer.reverse;
+    })
   }
 </script>
 
