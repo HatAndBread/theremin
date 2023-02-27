@@ -107,19 +107,20 @@ export const s = import("tone").then((Tone) => {
     const loopShift = new Tone.FrequencyShifter(0).connect(loopDelay);
     const loopDistortion = new Tone.Distortion(0).connect(loopShift);
     const loopVibrato = new Tone.Vibrato(0, 0).connect(loopDistortion);
-    const looper = new Tone.GrainPlayer({detune: 0, overlap: 1}).connect(loopVibrato);
+    const pitchShift = new Tone.PitchShift(0).connect(loopVibrato)
     let isLoop1 = true
-    const looper1 = new Tone.Player().connect(loopVibrato);
-    const looper2 = new Tone.Player().connect(loopVibrato);
+    const looper1 = new Tone.Player().connect(pitchShift);
+    const looper2 = new Tone.Player().connect(pitchShift);
     const newLooper = {
       stop: () => {
         [looper1, looper2].forEach((l) => l.stop());
         Tone.Transport.cancel();
       },
       isStarted: () => looper1.state === "started" || looper2.state === "started",
-      players: [looper1, looper2]
+      players: [looper1, looper2],
+      pitchShift
     }
-    theLooper = {looper: newLooper, delay: loopDelay, shift: loopShift, distortion: loopDistortion, vibrato: loopVibrato};
+    theLooper = {looper: newLooper, delay: loopDelay, shift: loopShift, distortion: loopDistortion, vibrato: loopVibrato, pitchShift};
     for (let i = 0; i < 5; i++) {
       const gain = new Tone.Gain(0).connect(vibrato);
       const env = new Tone.AmplitudeEnvelope({

@@ -20,6 +20,7 @@ type Looper = {
   stop: () => void;
   isStarted: () => boolean;
   players: Tone.Player[];
+  pitchShift: Tone.PitchShift;
 }
 export type TheLooper = {
   looper: Looper;
@@ -27,4 +28,5 @@ export type TheLooper = {
   vibrato: Tone.Vibrato;
   shift: Tone.FrequencyShifter;
   delay: Tone.PingPongDelay;
+  pitchShift: Tone.PitchShift;
 }

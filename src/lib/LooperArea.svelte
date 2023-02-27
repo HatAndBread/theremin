@@ -9,32 +9,30 @@
     e.preventDefault();
     e.stopPropagation();
     const touch = e.targetTouches[0];
-    const {looper} = getLooper()
-    if (!looper || !ref) return;
+    const {pitchShift} = getLooper()
+    if (!pitchShift || !ref) return;
 
-    const {height} = ref.getBoundingClientRect();
-    const note = (touch.clientY / height) * 2
+    const {height, top} = ref.getBoundingClientRect();
+    const middle = height / 2;
+    const note = (touch.clientY - middle - top) / 4
     console.log(note)
+    pitchShift.pitch = note;
     indicator.style.top = `${touch.clientY}px`;
-    looper.players.forEach((player) => {
-      player.playbackRate = note;
-    })
   }
   const handleEnd = (e: TouchEvent) => {
-    const {looper} = getLooper();
-    if (!looper || !ref) return;
-    looper.players.forEach((player) => {
-    })
+    const {pitchShift} = getLooper();
+    if (!pitchShift || !ref) return;
+    pitchShift.pitch = 0;
     indicator.style.top = `50%`;
   } 
   const handleVolume = (v) => {
     localStorageWrite(loopVol, "loopVol", v);
   }
   const reverse = () => {
-    const looper = getLooper()?.looper;
+    const looper = getLooper();
     if (!looper) return;
-    looper.players.forEach((player) => {
-      player.buffer.reverse = !player.buffer.reverse;
+    looper.looper.players.forEach((player) => {
+      player.reverse = !player.reverse;
     })
   }
 </script>
@@ -54,6 +52,5 @@
     <SideAdjuster name="delay" switchColor="toggle toggle-success toggle-sm" looper={true}></SideAdjuster>
     <SideAdjuster name="distortion" switchColor="toggle toggle-success toggle-sm" looper={true}></SideAdjuster>
     <SideAdjuster name="shift" switchColor="toggle toggle-success toggle-sm" looper={true}></SideAdjuster>
-    <button class="p-2 text-xs bg-primary w-[calc(100%_-_12px)] mx-auto mt-2 active:bg-primary-focus rounded" on:touchstart={reverse}>Reverse</button>
   </div>
 </div>
