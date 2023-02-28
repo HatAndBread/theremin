@@ -29,15 +29,11 @@
     guide.classList.remove("hidden");
     guide.style.top = `${touch.clientY}px`
   }
-  const handleTouchStart = (e: TouchEvent) => {
-    if (!started) return;
-    e.preventDefault();
-    blur();
-    handleTouchMove(e, true);
-  }
 
-  const handleTouchMove = (e: TouchEvent, firstTouch?: true) => {
+  const handleTouchMove = (e: TouchEvent) => {
     if (!started) return;
+
+    let firstTouch = false;
     blur();
     e.preventDefault();
     const inactiveNotes = [...notes]
@@ -78,7 +74,7 @@
   }
 </script>
 
-<div class="absolute top-0 left-[80px] w-[calc(100vw_-_160px)] h-full flex flex-col" on:touchstart={handleTouchStart} on:touchend={handleTouchMove} on:touchmove={handleTouchMove}>
+<div class="absolute top-0 left-[80px] w-[calc(100vw_-_160px)] h-full flex flex-col" on:touchstart={handleTouchMove} on:touchend={handleTouchMove} on:touchmove={handleTouchMove}>
   {#each [...Array(5)] as _, i}
     <div bind:this={fingerGuides[`fingerGuide${i + 1}`]} class="fixed w-screen h-[4px] bg-primary hidden"/>
   {/each}
