@@ -31,6 +31,7 @@
     on = status;
   }
   const handleTouch = (e: TouchEvent) => {
+    e.preventDefault();
     const {top, left, right, bottom, width, height} = div?.getBoundingClientRect();
     const touch = Array.from(e.touches).find((t) => t.target === div);
     if (!touch || touch.clientX < left || touch.clientY < top || touch.clientX > right || touch.clientY > bottom) return handleTouchEnd();

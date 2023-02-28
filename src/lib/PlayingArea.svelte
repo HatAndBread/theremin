@@ -31,6 +31,7 @@
   }
   const handleTouchStart = (e: TouchEvent) => {
     if (!started) return;
+    e.preventDefault();
     blur();
     handleTouchMove(e, true);
   }
@@ -38,6 +39,7 @@
   const handleTouchMove = (e: TouchEvent, firstTouch?: true) => {
     if (!started) return;
     blur();
+    e.preventDefault();
     const inactiveNotes = [...notes]
     const touches = Array.from(e.touches)
       .filter((t) => {
