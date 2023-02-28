@@ -62,6 +62,7 @@
         const {top, bottom, left, right} = el.getBoundingClientRect();
         return touch.clientX > left && touch.clientX < right && touch.clientY < bottom && touch.clientY > top;
       }) as HTMLDivElement;
+      if (!element) return;
       const note = element?.dataset?.note;
 
       moveFingerGuide(touch, i);
