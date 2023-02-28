@@ -114,6 +114,7 @@ export const s = import("tone").then((Tone) => {
     const newLooper = {
       stop: () => {
         [looper1, looper2].forEach((l) => l.stop());
+        Tone.Transport.stop()
         Tone.Transport.cancel();
       },
       isStarted: () => looper1.state === "started" || looper2.state === "started",
