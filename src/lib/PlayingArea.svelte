@@ -47,6 +47,7 @@
         return Array.from(target.classList).includes("notes");
       })
     if (touches.length > priorNumberOfTouches) {
+      firstTouch = true;
       for (let i = priorNumberOfTouches; i < touches.length; i++)  {
         instrument.start(i);
       }
