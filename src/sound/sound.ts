@@ -165,8 +165,12 @@ export const s = import("tone").then((Tone) => {
       instrument.oscillator.frequency.rampTo(frequency * baseLevel, 0.1)
     };
 
-    const updateVolume = (volume: number, instrument: Instrument) => {
-      instrument.gain.gain.rampTo(volume, 0.05);
+    const updateVolume = (volume: number, instrument: Instrument, firstTouch: true | undefined) => {
+      if (firstTouch) {
+        instrument.gain.gain.value = volume;
+      } else {
+        instrument.gain.gain.rampTo(volume, 0.05);
+      }
     };
 
     function start(touchNumber: number) {
@@ -195,8 +199,9 @@ export const s = import("tone").then((Tone) => {
       firstTouch: true | undefined,
       bl: number
     ) {
-      baseLevel = bl;
       if (!window.started) return;
+      
+      baseLevel = bl;
       const instrument = allInstruments[touchNumber];
       const baseFrequency = frequencyForNoteNumber(noteNumber);
       const nextFrequency = frequencyForNoteNumber(noteNumber + 1);
@@ -213,7 +218,7 @@ export const s = import("tone").then((Tone) => {
         }
       }, 1);
 
-      updateVolume(volume, instrument);
+      updateVolume(volume, instrument, firstTouch);
       updateFrequency(frequency, instrument, firstTouch);
     }
 
