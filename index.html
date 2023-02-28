@@ -49,5 +49,10 @@
         );
       });
     }
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState !== "hidden") {
+        window.location.reload();
+      }
+    })
   </script>
 </html>
