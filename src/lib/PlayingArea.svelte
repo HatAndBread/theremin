@@ -30,7 +30,7 @@
     guide.style.top = `${touch.clientY}px`
   }
 
-  const handleTouchMove = (e: TouchEvent) => {
+  const handleTouchMove = (e: TouchEvent, end?: true) => {
     if (!started) return;
 
     let firstTouch = false;
@@ -55,13 +55,15 @@
         guide.classList.add("hidden")
       }
     }
+    priorNumberOfTouches = touches.length;
+    if (end) return;
+
     touches.forEach((touch, i) => {
       const element = Array.from(document.querySelectorAll(".notes")).find((el) => {
         const {top, bottom, left, right} = el.getBoundingClientRect();
         return touch.clientX > left && touch.clientX < right && touch.clientY < bottom && touch.clientY > top;
       }) as HTMLDivElement;
       const note = element?.dataset?.note;
-      if (typeof note !== "string") return;
 
       moveFingerGuide(touch, i);
       inactiveNotes[note] = null;
@@ -70,11 +72,10 @@
       const volume = (touch.clientX - left) / width
       instrument.play(parseInt(note), percentage, i, volume, firstTouch, $baseLevel)
     })
-    priorNumberOfTouches = touches.length;
   }
 </script>
 
-<div class="absolute top-0 left-[80px] w-[calc(100vw_-_160px)] h-full flex flex-col" on:touchstart={handleTouchMove} on:touchend={handleTouchMove} on:touchmove={handleTouchMove}>
+<div class="absolute top-0 left-[80px] w-[calc(100vw_-_160px)] h-full flex flex-col" on:touchstart={handleTouchMove} on:touchend={(e) => handleTouchMove(e, true)} on:touchmove={handleTouchMove}>
   {#each [...Array(5)] as _, i}
     <div bind:this={fingerGuides[`fingerGuide${i + 1}`]} class="fixed w-screen h-[4px] bg-primary hidden"/>
   {/each}
