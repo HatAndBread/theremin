@@ -17,7 +17,7 @@
 
   const getName = () => {
     if (!looper) return name;
-    return `looper_name`;
+    return `looper_${name}`;
   }
   const getOnOffStatus = () => !!window.localStorage.getItem(getName())
   let on = getOnOffStatus();
