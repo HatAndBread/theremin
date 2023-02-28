@@ -30,7 +30,7 @@
     guide.style.top = `${touch.clientY}px`
   }
 
-  const handleTouchMove = (e: TouchEvent, end?: true) => {
+  const handleTouchMove = (e: TouchEvent) => {
     if (!started) return;
 
     let firstTouch = false;
@@ -56,8 +56,7 @@
       }
     }
     priorNumberOfTouches = touches.length;
-    if (end) return;
-
+    
     touches.forEach((touch, i) => {
       const element = Array.from(document.querySelectorAll(".notes")).find((el) => {
         const {top, bottom, left, right} = el.getBoundingClientRect();
@@ -75,7 +74,7 @@
   }
 </script>
 
-<div class="absolute top-0 left-[80px] w-[calc(100vw_-_160px)] h-full flex flex-col" on:touchstart={handleTouchMove} on:touchend={(e) => handleTouchMove(e, true)} on:touchmove={handleTouchMove}>
+<div class="absolute top-0 left-[80px] w-[calc(100vw_-_160px)] h-full flex flex-col" on:touchstart={handleTouchMove} on:touchend={handleTouchMove} on:touchmove={handleTouchMove}>
   {#each [...Array(5)] as _, i}
     <div bind:this={fingerGuides[`fingerGuide${i + 1}`]} class="fixed w-screen h-[4px] bg-primary hidden"/>
   {/each}
