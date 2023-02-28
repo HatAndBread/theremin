@@ -15,7 +15,6 @@
     const {height, top} = ref.getBoundingClientRect();
     const middle = height / 2;
     const note = (touch.clientY - middle - top) / 4
-    console.log(note)
     pitchShift.pitch = note;
     indicator.style.top = `${touch.clientY}px`;
   }
