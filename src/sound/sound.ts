@@ -38,9 +38,10 @@ decay.subscribe((value)=> {
     instrument.env.decay = value;
   });
 })
+const valueToLoopVol = ( value: number) => (value * 20) - 10;
 loopVol.subscribe((value) => {
   if (!theLooper) return;
-  const newVolume = (value * 20) - 10;
+  const newVolume = valueToLoopVol(value);
   theLooper.looper.players.forEach((looper) => {
     looper.volume.rampTo(newVolume)
   })
@@ -122,6 +123,9 @@ export const s = import("tone").then((Tone) => {
       pitchShift
     }
     theLooper = {looper: newLooper, delay: loopDelay, shift: loopShift, distortion: loopDistortion, vibrato: loopVibrato, pitchShift};
+    theLooper.looper.players.forEach((looper) => {
+      looper.volume.value = valueToLoopVol(parseFloat(localStorage.getItem("loopVol")) || 0.5)
+    })
     for (let i = 0; i < 5; i++) {
       const gain = new Tone.Gain(0).connect(vibrato);
       const env = new Tone.AmplitudeEnvelope({
